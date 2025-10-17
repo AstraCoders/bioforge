@@ -19,7 +19,7 @@ import java.util.List;
  * @author Lucasmellof, Lucas de Mello Freitas created on 16/10/2025
  */
 @Mixin(LivingEntity.class)
-public class MixinLivingEntity implements IEntityWithGene {
+public abstract class MixinLivingEntity implements IEntityWithGene {
 
     @Unique
     private final List<IGene> bioforge$genes = new ArrayList<>();
@@ -31,6 +31,9 @@ public class MixinLivingEntity implements IEntityWithGene {
 
     @Override
     public boolean bioforge$addGene(IGene gene) {
+        if (this.bioforge$hasGene(gene.getClass())) {
+            return false;
+        }
         if (!gene.canApplyGene(this, gene)) {
             return false;
         }
@@ -47,28 +50,28 @@ public class MixinLivingEntity implements IEntityWithGene {
     @Override
     public boolean bioforge$hasGene(Class<? extends IGene> geneClass) {
         for (IGene gene : this.bioforge$genes) {
-			if (gene.getClass().equals(geneClass)) {
-				return true;
-			}
-		}
-		return false;
+            if (gene.getClass().equals(geneClass)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-	@Override
-	public void bioforge$removeGene(Class<? extends IGene> geneClass) {
-		IGene toRemove = null;
-		for (IGene gene : this.bioforge$genes) {
-			if (gene.getClass().equals(geneClass)) {
-				toRemove = gene;
-				break;
-			}
-		}
-		if (toRemove != null) {
-			this.bioforge$removeGene(toRemove);
-		}
-	}
+    @Override
+    public void bioforge$removeGene(Class<? extends IGene> geneClass) {
+        IGene toRemove = null;
+        for (IGene gene : this.bioforge$genes) {
+            if (gene.getClass().equals(geneClass)) {
+                toRemove = gene;
+                break;
+            }
+        }
+        if (toRemove != null) {
+            this.bioforge$removeGene(toRemove);
+        }
+    }
 
-	@Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
+    @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
     public void onSave(CompoundTag compound, CallbackInfo ci) {
         ListTag nbt = compound.contains("BioforgeGenes") ? compound.getList("BioforgeGenes", 10) : null;
         if (nbt != null && this.bioforge$genes != null) {
@@ -79,19 +82,19 @@ public class MixinLivingEntity implements IEntityWithGene {
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
     public void onRead(CompoundTag compound, CallbackInfo ci) {
         if (!compound.contains("BioforgeGenes")) {
-           return;
+            return;
         }
-		ListTag nbt = compound.getList("BioforgeGenes", 8);
-		for (int i = 0; i < nbt.size(); i++) {
-			try {
-				Class<?> geneClass = Class.forName(nbt.getString(i));
-				if (IGene.class.isAssignableFrom(geneClass)) {
-					IGene gene = (IGene) geneClass.getDeclaredConstructor().newInstance();
-					this.bioforge$addGene(gene);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+        ListTag nbt = compound.getList("BioforgeGenes", 8);
+        for (int i = 0; i < nbt.size(); i++) {
+            try {
+                Class<?> geneClass = Class.forName(nbt.getString(i));
+                if (IGene.class.isAssignableFrom(geneClass)) {
+                    IGene gene = (IGene) geneClass.getDeclaredConstructor().newInstance();
+                    this.bioforge$addGene(gene);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
