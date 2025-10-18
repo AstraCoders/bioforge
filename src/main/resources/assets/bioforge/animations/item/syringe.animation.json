@@ -8,19 +8,16 @@
 			"loop": true,
 			"bones": {
 				"cap": {
-					"position": {
-						"vector": [0, -8, 0]
-					}
+					"position": [0, -8, 0]
 				},
 				"liquid2": {
-					"scale": {
-						"vector": [0, 0, 0]
-					}
+					"scale": 0
 				},
 				"liquid1": {
-					"scale": {
-						"vector": [0, 0, 0]
-					}
+					"scale": 0
+				},
+				"vial": {
+					"position": [0, 4, 0]
 				}
 			}
 		},

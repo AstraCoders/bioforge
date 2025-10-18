@@ -1,15 +1,16 @@
 package com.lucasmellof.bioforge.items;
 
 import com.lucasmellof.bioforge.client.renderer.SyringeItemRenderer;
+import com.lucasmellof.bioforge.data.BloodData;
 import com.lucasmellof.bioforge.datagen.ModLang;
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.GeneType;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
-import com.lucasmellof.bioforge.registry.ModGenes;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -23,11 +24,14 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
@@ -40,6 +44,11 @@ import java.util.function.Consumer;
  * @author Lucasmellof, Lucas de Mello Freitas created on 17/10/2025
  */
 public class SyringeItem extends Item implements GeoItem {
+
+    private static final RawAnimation EMPTY_ANIM = RawAnimation.begin().thenPlay("animation.empty");
+    private static final RawAnimation FULL_ANIM = RawAnimation.begin().thenPlay("animation.full");
+    private static final RawAnimation INJECT_ANIM = RawAnimation.begin().thenPlay("animation.filling");
+
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public SyringeItem() {
@@ -55,7 +64,7 @@ public class SyringeItem extends Item implements GeoItem {
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.CROSSBOW;
+        return UseAnim.BOW;
     }
 
     @Override
@@ -63,6 +72,9 @@ public class SyringeItem extends Item implements GeoItem {
         if (remainingUseDuration <= 1) {
             var player = (livingEntity instanceof ServerPlayer p) ? p : null;
             if (player == null) return;
+
+            triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "empty");
+
 
             player.stopUsingItem();
 
@@ -82,10 +94,11 @@ public class SyringeItem extends Item implements GeoItem {
             player.displayClientMessage(Component.literal("HitResult: " + hitResult.getType()), true);
             if (hitResult.getType() != HitResult.Type.ENTITY) return;
             if (!(hitResult instanceof EntityHitResult entityHitResult
-                    && entityHitResult.getEntity() instanceof LivingEntity target)) return;
+                  && entityHitResult.getEntity() instanceof LivingEntity target)) return;
 
             if (hasBlood(stack)) {
                 inject(stack, target);
+                setBloodData(stack, null);
                 target.hurt(level.damageSources().cactus(), 1f); // todo: add custom damage source
                 player.getCooldowns().addCooldown(this, 10);
                 return;
@@ -93,8 +106,11 @@ public class SyringeItem extends Item implements GeoItem {
 
             var entityWithGene = (IEntityWithGene) target;
             var genes = entityWithGene.bioforge$getGenes();
+            //TODO: var bloodData = entityWithGene.bioforge$getBloodData();
 
+            triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.full");
             addGenes(stack, genes);
+            setBloodData(stack, new BloodData(0xffff5555));
             entityWithGene.bioforge$clearGenes();
             target.hurt(level.damageSources().cactus(), 1f); // todo: add custom damage source
             player.getCooldowns().addCooldown(this, 10);
@@ -154,6 +170,15 @@ public class SyringeItem extends Item implements GeoItem {
         stack.set(ModComponentTypes.GENE.get(), HolderSet.direct(new ArrayList<>(newGenes)));
     }
 
+    public static void setBloodData(ItemStack stack, BloodData bloodData) {
+        stack.set(ModComponentTypes.BLOOD_DATA.get(), bloodData);
+    }
+
+    @Nullable
+    public static BloodData getBloodData(ItemStack stack) {
+        return stack.get(ModComponentTypes.BLOOD_DATA.get());
+    }
+
     public static void addGenes(ItemStack stack, Set<GeneType<?>> genes) {
         var currentGenes = getGenes(stack);
 
@@ -170,7 +195,7 @@ public class SyringeItem extends Item implements GeoItem {
 
     public static boolean hasBlood(ItemStack stack) {
         var genes = getGenes(stack);
-        return !genes.isEmpty();
+        return !genes.isEmpty() || getBloodData(stack) != null;
     }
 
     public static void removeGenes(ItemStack stack, Set<Holder<GeneType<?>>> genesToRemove) {
@@ -190,7 +215,33 @@ public class SyringeItem extends Item implements GeoItem {
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
+        AnimationController<SyringeItem> dialogueController = new AnimationController<>(this, "controller", 0, this::syringeController);
+        dialogueController.triggerableAnim("full", FULL_ANIM);
+        dialogueController.triggerableAnim("empty", EMPTY_ANIM);
+        dialogueController.triggerableAnim("filling", INJECT_ANIM);
+
+        controllers.add(dialogueController);
+    }
+
+    private <E extends GeoAnimatable> PlayState syringeController(AnimationState<E> state) {
+        ItemStack stack = state.getData(DataTickets.ITEMSTACK);
+        if (stack == null)
+            return PlayState.STOP;
+
+        // Verifica se há sangue armazenado
+        boolean hasBlood = getBloodData(stack) != null;
+
+        // Define qual animação deve rodar
+        if (!hasBlood) {
+            state.setAndContinue(RawAnimation.begin().thenLoop("animation.empty"));
+        } else {
+            state.setAndContinue(RawAnimation.begin().thenPlay("animation.full"));
+        }
+
+        return PlayState.CONTINUE;
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
