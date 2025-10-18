@@ -1,5 +1,6 @@
 package com.lucasmellof.bioforge.gene;
 
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 
@@ -12,7 +13,7 @@ public abstract class ConsumableGene extends Gene {
 
     public ConsumableGene(
             ResourceLocation id,
-            List<Class<? extends Gene>> incompatibleGenes,
+            List<Holder<GeneType<?>>> incompatibleGenes,
             List<EntityType<?>> incompatibleEntities,
             List<EntityType<?>> applicableEntities) {
         super(id, incompatibleGenes, incompatibleEntities, applicableEntities);

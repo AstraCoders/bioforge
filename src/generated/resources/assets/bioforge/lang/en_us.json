@@ -1,0 +1,8 @@
+{
+  "gene.bioforge.aggressive_gene": "Aggressive Gene",
+  "gene.bioforge.passive_gene": "Passive Gene",
+  "item.bioforge.syringe": "Syringe",
+  "item.bioforge.syringe.genes": "Genes:",
+  "item.bioforge.syringe.no_genes": "No Genes",
+  "itemGroup.bioforge": "Bioforge Group"
+}

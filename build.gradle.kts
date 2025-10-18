@@ -9,10 +9,6 @@ plugins {
 version = project.property("mod_version") as String
 group = project.property("mod_group_id") as String
 
-repositories {
-	mavenLocal()
-}
-
 base {
 	archivesName = project.property("mod_id") as String
 }
@@ -102,10 +98,28 @@ neoForge {
 	}
 }
 
+repositories {
+	mavenLocal()
+
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "GeckoLib"
+				setUrl("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
+			}
+		}
+		filter {
+			includeGroup("software.bernie.geckolib")
+		}
+	}
+}
+
+
 dependencies {
 	compileOnly("org.projectlombok:lombok:1.18.42")
 	annotationProcessor("org.projectlombok:lombok:1.18.42")
 
+	implementation("software.bernie.geckolib:geckolib-neoforge-${project.property("minecraft_version")}:${project.property("geckolib_version")}")
 }
 
 tasks.withType(JavaExec::class) {

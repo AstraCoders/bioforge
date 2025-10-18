@@ -2,6 +2,7 @@ package com.lucasmellof.bioforge.mixins;
 
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.types.AggressiveGene;
+import com.lucasmellof.bioforge.registry.ModGenes;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -22,7 +23,7 @@ public abstract class MixinMeleeAttackGoal extends Goal {
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
 	public void onCanUse(CallbackInfoReturnable<Boolean> cir) {
 		if (!(this.mob instanceof IEntityWithGene entity)) return;
-		if (!entity.bioforge$hasGene(AggressiveGene.class)) {
+		if (!entity.bioforge$hasGene(ModGenes.AGGRESSIVE_GENE.get())) {
 			cir.setReturnValue(false);
 		}
 	}
@@ -30,7 +31,7 @@ public abstract class MixinMeleeAttackGoal extends Goal {
 	@Inject(method = "canContinueToUse", at = @At("HEAD"), cancellable = true)
 	public void onCanContinueToUse(CallbackInfoReturnable<Boolean> cir) {
 		if (!(this.mob instanceof IEntityWithGene entity)) return;
-		if (!entity.bioforge$hasGene(AggressiveGene.class)) {
+		if (!entity.bioforge$hasGene(ModGenes.AGGRESSIVE_GENE.get())) {
 			cir.setReturnValue(false);
 		}
 	}

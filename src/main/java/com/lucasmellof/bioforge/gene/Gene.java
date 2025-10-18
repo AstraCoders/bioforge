@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 
@@ -18,19 +19,9 @@ import java.util.List;
 @Getter
 public abstract class Gene {
 
-//    public static final Codec<Gene> CODEC = RecordCodecBuilder.create(it -> {
-//        return it.group(
-//                ResourceLocation.CODEC.fieldOf("id").forGetter(Gene::getId),
-//                Codec.list(Codec.CLASS.of(Gene.class)).fieldOf("incompatible_genes").forGetter(Gene::getIncompatibleGenes),
-//                Codec.list(EntityType.CODEC).fieldOf("incompatible_entities").forGetter(Gene::getIncompatibleEntities),
-//                Codec.list(EntityType.CODEC).fieldOf("applicable_entities").forGetter(Gene::getApplicableEntities)
-//        ).apply(it, Gene::new);
-//    });
-
-
     private final ResourceLocation id;
     @Accessors(makeFinal = true)
-    private final List<Class<? extends Gene>> incompatibleGenes;
+    private final List<Holder<GeneType<?>>> incompatibleGenes;
     @Accessors(makeFinal = true)
     private final List<EntityType<?>> incompatibleEntities;
     @Accessors(makeFinal = true)
@@ -38,7 +29,7 @@ public abstract class Gene {
 
     public Gene(
             ResourceLocation id,
-            List<Class<? extends Gene>> incompatibleGenes,
+            List<Holder<GeneType<?>>> incompatibleGenes,
             List<EntityType<?>> incompatibleEntities,
             List<EntityType<?>> applicableEntities) {
         this.id = id;
@@ -54,8 +45,8 @@ public abstract class Gene {
     public void tick() {}
 
     public boolean canApplyGene(IEntityWithGene entity, Gene gene) {
-        for (Class<? extends Gene> incompatibleGene : gene.getIncompatibleGenes()) {
-            if (entity.bioforge$hasGene(incompatibleGene)) {
+        for (Holder<GeneType<?>> incompatibleGene : gene.getIncompatibleGenes()) {
+            if (entity.bioforge$hasGene(incompatibleGene.value())) {
                 return false;
             }
         }
@@ -82,11 +73,13 @@ public abstract class Gene {
     public void addGene(IEntityWithGene genes) {}
 
     @SafeVarargs
-    public final void setIncompatibleGenes(Class<? extends Gene>... genes) {
+    public final void setIncompatibleGenes(Holder<GeneType<?>>... genes) {
         if (this.incompatibleGenes == null) {
             throw new IllegalStateException("Incompatible genes list is null");
         }
         this.incompatibleGenes.clear();
         Collections.addAll(this.incompatibleGenes, genes);
     }
+
+    public abstract GeneType<? extends Gene> getType();
 }

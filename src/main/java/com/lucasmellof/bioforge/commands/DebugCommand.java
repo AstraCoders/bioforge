@@ -30,14 +30,14 @@ public class DebugCommand {
     private int onRemove(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         var entity = EntityArgument.getEntity(ctx, "entity");
         IEntityWithGene et = (IEntityWithGene) entity;
-        et.bioforge$removeGene(AggressiveGene.class);
+        et.bioforge$removeGene(ModGenes.AGGRESSIVE_GENE.get());
         return 1;
     }
 
     private int onAdd(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         var entity = EntityArgument.getEntity(ctx, "entity");
         IEntityWithGene et = (IEntityWithGene) entity;
-        et.bioforge$addGene(ModGenes.AGGRESSIVE_GENE.get());
+        et.bioforge$addGene(ModGenes.AGGRESSIVE_GENE.get().create());
 
 		return 1;
     }
