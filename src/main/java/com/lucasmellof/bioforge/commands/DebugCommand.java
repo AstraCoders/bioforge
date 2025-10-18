@@ -2,6 +2,7 @@ package com.lucasmellof.bioforge.commands;
 
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.types.AggressiveGene;
+import com.lucasmellof.bioforge.registry.ModGenes;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -36,7 +37,7 @@ public class DebugCommand {
     private int onAdd(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         var entity = EntityArgument.getEntity(ctx, "entity");
         IEntityWithGene et = (IEntityWithGene) entity;
-        et.bioforge$addGene(new AggressiveGene());
+        et.bioforge$addGene(ModGenes.AGGRESSIVE_GENE.get());
 
 		return 1;
     }

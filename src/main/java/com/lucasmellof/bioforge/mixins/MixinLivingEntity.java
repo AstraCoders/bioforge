@@ -1,7 +1,7 @@
 package com.lucasmellof.bioforge.mixins;
 
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
-import com.lucasmellof.bioforge.gene.IGene;
+import com.lucasmellof.bioforge.gene.Gene;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -22,53 +22,11 @@ import java.util.List;
 public abstract class MixinLivingEntity implements IEntityWithGene {
 
     @Unique
-    private final List<IGene> bioforge$genes = new ArrayList<>();
+    private final List<Gene> bioforge$genes = new ArrayList<>();
 
     @Override
-    public List<? extends IGene> bioforge$getGenes() {
+    public List<Gene> bioforge$getGenes() {
         return this.bioforge$genes;
-    }
-
-    @Override
-    public boolean bioforge$addGene(IGene gene) {
-        if (this.bioforge$hasGene(gene.getClass())) {
-            return false;
-        }
-        if (!gene.canApplyGene(this, gene)) {
-            return false;
-        }
-        this.bioforge$genes.add(gene);
-        return false;
-    }
-
-    @Override
-    public void bioforge$removeGene(IGene gene) {
-        if (!gene.removeGene(this)) return;
-        this.bioforge$genes.remove(gene);
-    }
-
-    @Override
-    public boolean bioforge$hasGene(Class<? extends IGene> geneClass) {
-        for (IGene gene : this.bioforge$genes) {
-            if (gene.getClass().equals(geneClass)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void bioforge$removeGene(Class<? extends IGene> geneClass) {
-        IGene toRemove = null;
-        for (IGene gene : this.bioforge$genes) {
-            if (gene.getClass().equals(geneClass)) {
-                toRemove = gene;
-                break;
-            }
-        }
-        if (toRemove != null) {
-            this.bioforge$removeGene(toRemove);
-        }
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
@@ -88,13 +46,18 @@ public abstract class MixinLivingEntity implements IEntityWithGene {
         for (int i = 0; i < nbt.size(); i++) {
             try {
                 Class<?> geneClass = Class.forName(nbt.getString(i));
-                if (IGene.class.isAssignableFrom(geneClass)) {
-                    IGene gene = (IGene) geneClass.getDeclaredConstructor().newInstance();
+                if (Gene.class.isAssignableFrom(geneClass)) {
+                    Gene gene = (Gene) geneClass.getDeclaredConstructor().newInstance();
                     this.bioforge$addGene(gene);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public LivingEntity self() {
+        return (LivingEntity) (Object) this;
     }
 }

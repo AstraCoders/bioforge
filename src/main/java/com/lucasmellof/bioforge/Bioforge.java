@@ -1,5 +1,6 @@
 package com.lucasmellof.bioforge;
 
+import com.lucasmellof.bioforge.registry.ModGenes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -14,6 +15,9 @@ public class Bioforge {
 
 	public Bioforge(IEventBus modEventBus, ModContainer modContainer) {
 		modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+
+		ModGenes.GENES.register(modEventBus);
 	}
 
 }
