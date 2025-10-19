@@ -7,6 +7,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
+import java.util.List;
+
 /**
  * @author Rok, Pedro Lucas nmm. Created on 18/10/2025
  * @project bioforge
@@ -21,10 +23,15 @@ public record BloodData(int color) {
         ).apply(instance, BloodData::new)
     );
 
+    public static final Codec<List<BloodData>> HOLDER_LIST_CODEC = CODEC.listOf();
+
     public static final StreamCodec<ByteBuf, BloodData> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.INT, BloodData::color,
         BloodData::new
     );
+
+    public static final StreamCodec<ByteBuf, List<BloodData>> HOLDER_LIST_STREAM_CODEC = ByteBufCodecs.fromCodec(HOLDER_LIST_CODEC);
+
     public static final int MAX_MIX_COUNT = 2;
     public static final Codec<Integer> MIX_COUNT_CODEC = Codec.intRange(0, MAX_MIX_COUNT);
 

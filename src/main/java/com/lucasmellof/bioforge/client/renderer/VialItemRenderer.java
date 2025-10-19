@@ -14,11 +14,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
+
+import java.util.List;
 
 /**
  * @author Rok, Pedro Lucas nmm. Created on 18/10/2025
@@ -100,14 +100,14 @@ public class VialItemRenderer extends GeoItemRenderer<VialItem> {
             int renderColor) {
 
         ItemStack stack = this.currentItemStack;
-        BloodData bloodData = stack != null ? stack.get(ModComponentTypes.BLOOD_DATA) : null;
+        List<BloodData> bloodDatas = stack != null ? stack.get(ModComponentTypes.BLOOD_DATA) : null;
 
         String boneName = bone.getName();
 
-        if (bloodData != null) {
-            int colorWithBlood = bloodData.color();
-            var mix = VialItem.getMixCount(stack);
-            if (boneName.equalsIgnoreCase("liquid1") && mix >= 1) {
+        if (bloodDatas != null && !bloodDatas.isEmpty()) {
+            var count = bloodDatas.size();
+            if (boneName.equalsIgnoreCase("liquid1") ) {
+               int colorWithBlood = bloodDatas.getFirst().color();
                super.renderRecursively(
                         poseStack,
                         animatable,
@@ -122,7 +122,8 @@ public class VialItemRenderer extends GeoItemRenderer<VialItem> {
                 colorWithBlood);
                return;
             }
-            if (boneName.equalsIgnoreCase("liquid2") && mix >= 2) {
+            if (boneName.equalsIgnoreCase("liquid2") && count >= 2) {
+                int colorWithBlood = bloodDatas.get(1).color();
                 super.renderRecursively(
                         poseStack,
                         animatable,

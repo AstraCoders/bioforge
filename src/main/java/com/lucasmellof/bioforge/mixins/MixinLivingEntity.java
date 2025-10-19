@@ -7,15 +7,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /*
@@ -62,5 +63,11 @@ public abstract class MixinLivingEntity implements IEntityWithGene {
     @Override
     public LivingEntity self() {
         return (LivingEntity) (Object) this;
+    }
+
+    @Redirect(method = "createLivingAttributes", at = @At(value="INVOKE",target="Lnet/minecraft/world/entity/ai/attributes/AttributeSupplier;builder()Lnet/minecraft/world/entity/ai/attributes/AttributeSupplier$Builder;"))
+    private static AttributeSupplier.Builder onCreateAttributes() {
+        // all entities should have attack damage attribute to avoid crashes
+        return AttributeSupplier.builder().add(Attributes.ATTACK_DAMAGE);
     }
 }

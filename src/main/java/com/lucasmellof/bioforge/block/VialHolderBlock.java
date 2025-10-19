@@ -107,4 +107,12 @@ public class VialHolderBlock extends HorizontalDirectionalBlock implements Entit
 		}
 		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
+
+	@Override
+	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+		if (level.getBlockEntity(pos) instanceof VialHolderBlockEntity vialHolder) {
+			vialHolder.onRemove(state, level, pos);
+		}
+		super.onRemove(state, level, pos, newState, movedByPiston);
+	}
 }

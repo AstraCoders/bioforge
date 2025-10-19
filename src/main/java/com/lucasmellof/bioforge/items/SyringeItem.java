@@ -169,12 +169,16 @@ public class SyringeItem extends Item implements GeoItem {
     }
 
     public static void setBloodData(ItemStack stack, BloodData bloodData) {
-        stack.set(ModComponentTypes.BLOOD_DATA.get(), bloodData);
+        stack.set(ModComponentTypes.BLOOD_DATA.get(), bloodData == null ? null : List.of(bloodData));
     }
 
     @Nullable
     public static BloodData getBloodData(ItemStack stack) {
-        return stack.get(ModComponentTypes.BLOOD_DATA.get());
+        List<BloodData> data = stack.get(ModComponentTypes.BLOOD_DATA.get());
+        if (data == null || data.isEmpty()) {
+            return null;
+        }
+        return data.getFirst();
     }
 
     public static void addGenes(ItemStack stack, Set<GeneType<?>> genes) {

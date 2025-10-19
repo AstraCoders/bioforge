@@ -19,6 +19,7 @@ import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -40,31 +41,36 @@ public class VialItem extends Item implements GeoItem {
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
-    public static void addBlood(Player player, ItemStack stack, BloodData data) {
-        if (player.level().isClientSide) return;
+    public static boolean addBlood(Player player, ItemStack stack, BloodData data) {
+        if (player.level().isClientSide) return false;
         var blood = getBloodData(stack);
-        var canMix = canMix(stack);
         VialItem self = (VialItem) stack.getItem();
-        if (blood != null && canMix) {
-            var mixedBlood = blood.mix(data);
-            setBloodData(stack, mixedBlood);
-            setMixCount(stack, getMixCount(stack) + 1);
-            self.triggerAnim(
-                    player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.full");
-        } else if (blood == null) {
-            setBloodData(stack, data);
-            setMixCount(stack, 1);
-            self.triggerAnim(
-                    player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.half");
+        if (blood != null && blood.size() >= BloodData.MAX_MIX_COUNT ) {
+            return false;
         }
+        addBloodData(stack, data);
+        self.triggerAnim(
+                player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.full");
+        return true;
     }
 
-    public static BloodData getBloodData(ItemStack stack) {
+    public static List<BloodData> getBloodData(ItemStack stack) {
         return stack.get(ModComponentTypes.BLOOD_DATA.get());
     }
 
-    public static void setBloodData(ItemStack stack, BloodData bloodData) {
+    public static void setBloodData(ItemStack stack, List<BloodData> bloodData) {
         stack.set(ModComponentTypes.BLOOD_DATA.get(), bloodData);
+    }
+
+    public static void addBloodData(ItemStack stack, BloodData bloodData) {
+        var data = getBloodData(stack);
+        if (data == null) {
+            data = new ArrayList<>();
+        }
+        if (data.size() < BloodData.MAX_MIX_COUNT) {
+            data.add(bloodData);
+        }
+        stack.set(ModComponentTypes.BLOOD_DATA.get(), data);
     }
 
     public static boolean hasBlood(ItemStack stack) {
@@ -84,12 +90,22 @@ public class VialItem extends Item implements GeoItem {
         return getMixCount(stack) < BloodData.MAX_MIX_COUNT;
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        var mix = getMixCount(stack);
-        tooltipComponents.add(Component.literal(mix + "/" + BloodData.MAX_MIX_COUNT + " mixes"));
+    public static boolean isFull(ItemStack stack) {
+        var data = getBloodData(stack);
+        if (data == null) return false;
 
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        return data.size() >= BloodData.MAX_MIX_COUNT;
+    }
+
+    @Override
+    public void appendHoverText(
+            ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        var blood = getBloodData(stack);
+        if (blood == null) return;
+        for (BloodData data : blood) {
+            tooltipComponents.add(Component.literal("- Blood: ").append(Integer.toString(data.color(), 16)));
+        }
+
     }
 
     @Override

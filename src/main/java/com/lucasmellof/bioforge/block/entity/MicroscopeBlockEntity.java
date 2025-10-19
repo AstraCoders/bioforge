@@ -1,6 +1,5 @@
 package com.lucasmellof.bioforge.block.entity;
 
-import com.lucasmellof.bioforge.data.BloodData;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
 import com.lucasmellof.bioforge.registry.ModBlockEntities;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
@@ -154,8 +153,8 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
     private static void processItem(ItemStack stack) {
         if (!hasBloodData(stack)) return;
 
-        BloodData bloodData = stack.get(ModComponentTypes.BLOOD_DATA);
-        if (bloodData == null) return;
+//        BloodData bloodData = stack.get(ModComponentTypes.BLOOD_DATA);
+//        if (bloodData == null) return;
 
         // Adiciona informações na lore do item
         /*Component loreComponent = Component.literal("§7═══ Análise do Microscópio ═══")

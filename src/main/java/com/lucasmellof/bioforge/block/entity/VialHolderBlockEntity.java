@@ -6,10 +6,12 @@ import com.lucasmellof.bioforge.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -82,6 +84,15 @@ public class VialHolderBlockEntity extends SyncableBlockEntity implements GeoBlo
             inventory.insertItem(0, toInsert, false);
             return ItemInteractionResult.SUCCESS;
         }
+        if (hasVial && handItem.getItem() instanceof VialItem) {
+            var vial = getItem();
+            if (!player.addItem(vial)) {
+                player.drop(vial, false);
+            }
+            ItemStack toInsert = handItem.split(1);
+            inventory.insertItem(0, toInsert, false);
+            return ItemInteractionResult.SUCCESS;
+        }
 
         if (handItem.isEmpty() || !hasVial) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (!(handItem.getItem() instanceof SyringeItem)) {
@@ -89,10 +100,12 @@ public class VialHolderBlockEntity extends SyncableBlockEntity implements GeoBlo
         }
 
         var vial = getItem();
-        if (!VialItem.canMix(vial)) return ItemInteractionResult.FAIL;
-
-        SyringeItem.mixWithVial(player, handItem, vial);
-        sync();
+        if (VialItem.isFull(vial)) return ItemInteractionResult.FAIL;
+        var blood = SyringeItem.getBloodData(handItem);
+		if (blood != null && VialItem.addBlood(player, vial, blood)) {
+			SyringeItem.setBloodData(handItem, null);
+            sync();
+		}
 
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -103,6 +116,7 @@ public class VialHolderBlockEntity extends SyncableBlockEntity implements GeoBlo
         //			return NO_VIAL;
         //        }));
     }
+
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -115,5 +129,13 @@ public class VialHolderBlockEntity extends SyncableBlockEntity implements GeoBlo
 
     public ItemStack getItem() {
         return inventory.getStackInSlot(0);
+    }
+
+    public void onRemove(BlockState state, Level level, BlockPos pos) {
+        if (!level.isClientSide) {
+            for(int i = 0; i < inventory.getSlots(); i++) {
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
+            }
+        }
     }
 }

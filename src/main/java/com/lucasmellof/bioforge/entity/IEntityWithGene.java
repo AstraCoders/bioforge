@@ -4,7 +4,6 @@ import com.lucasmellof.bioforge.gene.Gene;
 import com.lucasmellof.bioforge.gene.GeneType;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.util.List;
 import java.util.Set;
 
 /*
@@ -22,11 +21,14 @@ public interface IEntityWithGene {
 		if (!gene.canApplyGene(this, gene)) {
 			return false;
 		}
+		gene.addGene(this);
 		return bioforge$getGenes().add(gene.getType());
 	}
 
 	default void bioforge$removeGene(GeneType<?> gene) {
+		if (gene == null) return;
 		bioforge$getGenes().remove(gene);
+		gene.create().removeGene(this);
 	}
 	default boolean bioforge$hasGene(GeneType<?> geneClass) {
 		for (GeneType<?> gene : bioforge$getGenes()) {

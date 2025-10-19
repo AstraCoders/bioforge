@@ -17,6 +17,8 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
+import java.util.List;
+
 /**
  * @author Rok, Pedro Lucas nmm. Created on 18/10/2025
  * @project bioforge
@@ -72,11 +74,12 @@ public class SyringeItemRenderer extends GeoItemRenderer<SyringeItem> {
 								  int renderColor) {
 
 		ItemStack stack = this.currentItemStack;
-		BloodData bloodData = stack != null ? stack.get(ModComponentTypes.BLOOD_DATA) : null;
+		List<BloodData> bloodDatas = stack != null ? stack.get(ModComponentTypes.BLOOD_DATA) : null;
 
 		String boneName = bone.getName();
 
-		if (bloodData != null) {
+		if (bloodDatas != null && !bloodDatas.isEmpty()	) {
+			var bloodData = bloodDatas.getFirst();
 			if (boneName.equalsIgnoreCase("liquid1") ||
 				boneName.equalsIgnoreCase("liquid2")) {
 

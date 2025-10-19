@@ -10,6 +10,8 @@ import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.List;
+
 /*
  * @author Lucasmellof, Lucas de Mello Freitas created on 18/10/2025
  */
@@ -21,11 +23,11 @@ public class ModComponentTypes {
             COMPONENT_TYPES.registerComponentType("gene", it -> it.persistent(GeneCodecs.HOLDER_SET_CODEC)
                     .networkSynchronized(GeneCodecs.HOLDER_SET_STREAM_CODEC));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BloodData>> BLOOD_DATA =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<BloodData>>> BLOOD_DATA =
             COMPONENT_TYPES.register("blood_data", () ->
-                    DataComponentType.<BloodData>builder()
-                            .persistent(BloodData.CODEC)
-                            .networkSynchronized(BloodData.STREAM_CODEC)
+                    DataComponentType.<List<BloodData>>builder()
+                            .persistent(BloodData.HOLDER_LIST_CODEC)
+                            .networkSynchronized(BloodData.HOLDER_LIST_STREAM_CODEC)
                             .build()
             );
 
