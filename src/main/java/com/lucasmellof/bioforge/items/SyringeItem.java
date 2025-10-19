@@ -57,7 +57,7 @@ public class SyringeItem extends Item implements GeoItem {
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
-    @Override
+	@Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 40;
     }
@@ -78,8 +78,6 @@ public class SyringeItem extends Item implements GeoItem {
 
             player.stopUsingItem();
 
-            // target
-            //            var hitResult = player.pick(2f, 0f, false);
 
             var hitResult = ProjectileUtil.getEntityHitResult(
                     player,
@@ -110,7 +108,7 @@ public class SyringeItem extends Item implements GeoItem {
 
             triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.full");
             addGenes(stack, genes);
-            setBloodData(stack, new BloodData(0xffff5555));
+            setBloodData(stack, new BloodData(player.isShiftKeyDown() ? 0xffff5555 : 0xff55ff55));
             entityWithGene.bioforge$clearGenes();
             target.hurt(level.damageSources().cactus(), 1f); // todo: add custom damage source
             player.getCooldowns().addCooldown(this, 10);
@@ -234,11 +232,11 @@ public class SyringeItem extends Item implements GeoItem {
         boolean hasBlood = getBloodData(stack) != null;
 
         // Define qual animação deve rodar
-        if (!hasBlood) {
-            state.setAndContinue(RawAnimation.begin().thenLoop("animation.empty"));
-        } else {
-            state.setAndContinue(RawAnimation.begin().thenPlay("animation.full"));
-        }
+		if (hasBlood) {
+			state.setAndContinue(RawAnimation.begin().thenPlay("animation.full"));
+		} else {
+			state.setAndContinue(RawAnimation.begin().thenLoop("animation.empty"));
+		}
 
         return PlayState.CONTINUE;
     }
@@ -260,5 +258,15 @@ public class SyringeItem extends Item implements GeoItem {
                 return this.renderer;
             }
         });
+    }
+
+
+    public static void mixWithVial(Player player, ItemStack handItem, ItemStack vial) {
+        var currentBlood = getBloodData(handItem);
+        if (currentBlood == null) return;
+
+        VialItem.addBlood(player, vial, currentBlood);
+
+        setBloodData(handItem, null);
     }
 }

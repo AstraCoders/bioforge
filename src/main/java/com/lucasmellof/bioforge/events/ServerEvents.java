@@ -5,7 +5,6 @@ import com.lucasmellof.bioforge.commands.DebugCommand;
 import com.lucasmellof.bioforge.datagen.ModLang;
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.GeneType;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

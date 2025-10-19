@@ -82,7 +82,7 @@
 				{
 					"name": "liquid1",
 					"parent": "vial",
-					"pivot": [0, 0, 0],
+					"pivot": [0, 3.05, 0],
 					"cubes": [
 						{
 							"origin": [-1, 3.05, -1],

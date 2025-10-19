@@ -3,6 +3,7 @@ package com.lucasmellof.bioforge.registry;
 import com.lucasmellof.bioforge.Const;
 import com.lucasmellof.bioforge.gene.GeneType;
 import com.lucasmellof.bioforge.gene.types.AggressiveGene;
+import com.lucasmellof.bioforge.gene.types.BlankGene;
 import com.lucasmellof.bioforge.gene.types.PassiveGene;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -23,6 +24,10 @@ public class ModGenes {
 
     public static final DeferredHolder<GeneType<?>, GeneType<PassiveGene>> PASSIVE_GENE =
             GENES.register("passive_gene", (it) -> new GeneType<>(it, PassiveGene::new, PassiveGene.CODEC));
+
     public static final DeferredHolder<GeneType<?>, GeneType<AggressiveGene>> AGGRESSIVE_GENE =
             GENES.register("aggressive_gene", (it) -> new GeneType<>(it, AggressiveGene::new, AggressiveGene.CODEC));
+
+    public static final DeferredHolder<GeneType<?>, GeneType<BlankGene>> BLANK_GENE =
+            GENES.register("blank_gene", (it) -> new GeneType<>(it, BlankGene::new, BlankGene.CODEC));
 }

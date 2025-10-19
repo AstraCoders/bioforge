@@ -2,6 +2,7 @@ package com.lucasmellof.bioforge.registry;
 
 import com.lucasmellof.bioforge.Const;
 import com.lucasmellof.bioforge.items.SyringeItem;
+import com.lucasmellof.bioforge.items.VialItem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
@@ -14,4 +15,5 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Const.MOD_ID);
     public static final DeferredHolder<Item, SyringeItem> SYRINGE_ITEM = ITEMS.register("syringe", SyringeItem::new);
+    public static final DeferredHolder<Item, VialItem> VIAL_ITEM = ITEMS.register("vial", VialItem::new);
 }
