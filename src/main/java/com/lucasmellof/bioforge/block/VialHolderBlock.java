@@ -38,7 +38,6 @@ public class VialHolderBlock extends HorizontalDirectionalBlock implements Entit
 		shape = Shapes.join(shape, Shapes.box(0.25, 0, 0.5, 0.75, 0.4375, 0.5), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.375, 0, 0.4375, 0.625, 0.0625, 0.5625), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.3125, -0.008928749999999985, 0.4375, 0.6875, 0.36607125000000007, 0.5625), BooleanOp.OR);
-
 		return shape;
 	}
 

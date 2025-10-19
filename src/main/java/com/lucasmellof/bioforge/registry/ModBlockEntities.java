@@ -2,6 +2,7 @@ package com.lucasmellof.bioforge.registry;
 
 import com.lucasmellof.bioforge.Const;
 import com.lucasmellof.bioforge.block.entity.VialHolderBlockEntity;
+import com.lucasmellof.bioforge.block.entity.MicroscopeBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -21,4 +22,9 @@ public class ModBlockEntities {
 							ModBlocks.VIAL_HOLDER_BLOCK.get()
 					).build(null)
 			);
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MicroscopeBlockEntity>> MICROSCOPE_BE =
+			BLOCK_ENTITIES.register("microscope_be", () ->
+					BlockEntityType.Builder.of(MicroscopeBlockEntity::new,
+							ModBlocks.MICROSCOPE_BLOCK.get()).build(null));
 }

@@ -17,6 +17,7 @@ public class Bioforge {
 		modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
 
+		ModMenuTypes.MENUS.register(modEventBus);
 		ModGenes.GENES.register(modEventBus);
 		ModComponentTypes.COMPONENT_TYPES.register(modEventBus);
 		ModBlocks.BLOCKS.register(modEventBus);
