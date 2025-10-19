@@ -29,7 +29,7 @@ public class MicroscopeBlock extends HorizontalDirectionalBlock implements Entit
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public MicroscopeBlock() {
-        super(Properties.ofFullCopy(Blocks.CHAIN));
+        super(Properties.ofFullCopy(Blocks.CHAIN).noOcclusion().isViewBlocking((state, level, pos) -> false));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
@@ -47,7 +47,7 @@ public class MicroscopeBlock extends HorizontalDirectionalBlock implements Entit
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     @Override

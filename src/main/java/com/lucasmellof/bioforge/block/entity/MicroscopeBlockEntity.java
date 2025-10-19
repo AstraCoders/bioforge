@@ -1,5 +1,6 @@
 package com.lucasmellof.bioforge.block.entity;
 
+import com.lucasmellof.bioforge.data.BloodData;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
 import com.lucasmellof.bioforge.registry.ModBlockEntities;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
@@ -31,10 +32,11 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
     private static final int INPUT_SLOT = 0;
-    private static final int PROCESSING_TIME = 100; // 5 segundos
+    private static final int OUTPUT_SLOT = 1;
+    private static final int PROCESSING_TIME = 100;
 
     @Getter
-    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -45,8 +47,11 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            // Aqui você pode verificar se o item tem BloodData
-            return stack.has(ModComponentTypes.BLOOD_DATA);
+            return switch (slot) {
+                case INPUT_SLOT -> stack.has(ModComponentTypes.BLOOD_DATA);
+                case OUTPUT_SLOT -> false;
+                default -> false;
+            };
         }
     };
 
@@ -136,7 +141,7 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
             blockEntity.progress++;
 
             if (blockEntity.progress >= blockEntity.maxProgress) {
-                processItem(inputStack);
+                processItem(blockEntity, inputStack);
                 blockEntity.progress = 0;
             }
         } else {
@@ -150,11 +155,13 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
         return stack.has(ModComponentTypes.BLOOD_DATA);
     }
 
-    private static void processItem(ItemStack stack) {
-        if (!hasBloodData(stack)) return;
+    private static void processItem(MicroscopeBlockEntity blockEntity, ItemStack inputStack) {
+        if (!hasBloodData(inputStack)) return;
 
-//        BloodData bloodData = stack.get(ModComponentTypes.BLOOD_DATA);
-//        if (bloodData == null) return;
+        if (!inputStack.has(ModComponentTypes.BLOOD_DATA)) return;
+        ItemStack outputStack = inputStack.copy();
+        blockEntity.itemHandler.setStackInSlot(OUTPUT_SLOT, outputStack);
+        inputStack.shrink(1);
 
         // Adiciona informações na lore do item
         /*Component loreComponent = Component.literal("§7═══ Análise do Microscópio ═══")
@@ -163,7 +170,6 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
                 .append(Component.literal("\n§cPureza: §f" + String.format("%.1f%%", bloodData.purity())))
                 .append(Component.literal("\n§7═══════════════════════"));
 
-        // Adiciona à lore existente ou cria nova
         stack.set(ModDataComponents.LORE, java.util.List.of(loreComponent));*/
     }
 }

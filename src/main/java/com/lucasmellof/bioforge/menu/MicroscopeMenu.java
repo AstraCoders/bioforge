@@ -26,8 +26,15 @@ public class MicroscopeMenu extends AbstractContainerMenu {
 
         addDataSlots(data);
 
-        // Slot de input do microscópio (centro da GUI)
-        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 0, 80, 35));
+        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 0, 35, 14));
+
+        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 1, 35, 55) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+        });
+
 
         // Inventário do jogador
         int playerInvY = 84;
