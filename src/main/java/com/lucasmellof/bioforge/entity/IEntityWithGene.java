@@ -12,7 +12,7 @@ import java.util.Set;
 public interface IEntityWithGene {
 	LivingEntity self();
 
-	Set<GeneType<?>> bioforge$getGenes();
+	Set<Gene> bioforge$getGenes();
 
 	default boolean bioforge$addGene(Gene gene) {
 		if (this.bioforge$hasGene(gene.getType())) {
@@ -22,35 +22,20 @@ public interface IEntityWithGene {
 			return false;
 		}
 		gene.addGene(this);
-		return bioforge$getGenes().add(gene.getType());
+		return bioforge$getGenes().add(gene);
 	}
 
-	default void bioforge$removeGene(GeneType<?> gene) {
+	default void bioforge$removeGene(Gene gene) {
 		if (gene == null) return;
 		bioforge$getGenes().remove(gene);
-		gene.create().removeGene(this);
-	}
-	default boolean bioforge$hasGene(GeneType<?> geneClass) {
-		for (GeneType<?> gene : bioforge$getGenes()) {
-			if (gene.equals(geneClass)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	default boolean bioforge$hasGene(Class<? extends GeneType<?>> geneClass) {
-		for (GeneType<?> gene : bioforge$getGenes()) {
-			if (gene.getClass().equals(geneClass)) {
-				return true;
-			}
-		}
-		return false;
+		gene.removeGene(this);
 	}
 
-	default void bioforge$removeGene(Class<? extends GeneType<?>> geneClass) {
-		GeneType<?> toRemove = null;
-		for (GeneType<?> gene : bioforge$getGenes()) {
-			if (gene.getClass().equals(geneClass)) {
+	default void bioforge$removeGene(GeneType<?> type) {
+		if (type == null) return;
+		Gene toRemove = null;
+		for (Gene gene : bioforge$getGenes()) {
+			if (gene.getType().equals(type)) {
 				toRemove = gene;
 				break;
 			}
@@ -58,6 +43,53 @@ public interface IEntityWithGene {
 		if (toRemove != null) {
 			this.bioforge$removeGene(toRemove);
 		}
+	}
+
+	default boolean bioforge$hasGene(GeneType<?> geneClass) {
+		for (Gene gene : bioforge$getGenes()) {
+			if (gene.getType().equals(geneClass)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	default boolean bioforge$hasGene(Class<? extends GeneType<?>> geneClass) {
+		for (Gene gene : bioforge$getGenes()) {
+			if (gene.getType().getClass().equals(geneClass)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	default void bioforge$removeGene(Class<? extends GeneType<?>> geneClass) {
+		Gene toRemove = null;
+		for (Gene gene : bioforge$getGenes()) {
+			if (gene.getType().getClass().equals(geneClass)) {
+				toRemove = gene;
+				break;
+			}
+		}
+		if (toRemove != null) {
+			this.bioforge$removeGene(toRemove);
+		}
+	}
+
+	default Gene bioforge$getGene(Class<? extends GeneType<?>> geneClass) {
+		for (Gene gene : bioforge$getGenes()) {
+			if (gene.getType().getClass().equals(geneClass)) {
+				return gene;
+			}
+		}
+		return null;
+	}
+	default Gene bioforge$getGene(GeneType<?> geneClass) {
+		for (Gene gene : bioforge$getGenes()) {
+			if (gene.getType().equals(geneClass)) {
+				return gene;
+			}
+		}
+		return null;
 	}
 
 	default void bioforge$clearGenes() {

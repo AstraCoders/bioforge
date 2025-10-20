@@ -1,5 +1,6 @@
 package com.lucasmellof.bioforge.items;
 
+import com.google.common.collect.ImmutableCollection;
 import com.lucasmellof.bioforge.client.renderer.VialItemRenderer;
 import com.lucasmellof.bioforge.data.BloodData;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
@@ -66,6 +67,8 @@ public class VialItem extends Item implements GeoItem {
         var data = getBloodData(stack);
         if (data == null) {
             data = new ArrayList<>();
+        } else {
+            data = new ArrayList<>(data);
         }
         if (data.size() < BloodData.MAX_MIX_COUNT) {
             data.add(bloodData);

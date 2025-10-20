@@ -23,7 +23,7 @@ import java.util.stream.Stream;
  */
 public class GeneArguments implements ArgumentType<GeneType<?>> {
 
-	private static final Lazy<List<String>> EXAMPLES = Lazy.of(() -> Stream.of(ModGenes.PASSIVE_GENE.get(), ModGenes.AGGRESSIVE_GENE.get())
+	private static final Lazy<List<String>> EXAMPLES = Lazy.of(() -> Stream.of(ModGenes.AGGRESSIVE_GENE.get())
 			.map(geneType -> geneType.location().toString())
 			.collect(Collectors.toList()));
 

@@ -101,9 +101,13 @@ public class VialHolderBlockEntity extends SyncableBlockEntity implements GeoBlo
 
         var vial = getItem();
         if (VialItem.isFull(vial)) return ItemInteractionResult.FAIL;
-        var blood = SyringeItem.getBloodData(handItem);
+        var s = handItem.split(1);
+        var blood = SyringeItem.getBloodData(s);
 		if (blood != null && VialItem.addBlood(player, vial, blood)) {
-			SyringeItem.setBloodData(handItem, null);
+			SyringeItem.setBloodData(s, null);
+			if (player.addItem(s)) {
+				player.drop(s, false);
+			}
             sync();
 		}
 

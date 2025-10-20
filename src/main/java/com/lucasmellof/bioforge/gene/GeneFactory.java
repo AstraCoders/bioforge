@@ -7,5 +7,5 @@ import net.minecraft.resources.ResourceLocation;
  */
 @FunctionalInterface
 public interface GeneFactory<T extends Gene> {
-	T create(ResourceLocation id);
+	T create(ResourceLocation id, GeneType<?> info);
 }

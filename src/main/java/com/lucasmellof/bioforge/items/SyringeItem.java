@@ -4,6 +4,7 @@ import com.lucasmellof.bioforge.client.renderer.SyringeItemRenderer;
 import com.lucasmellof.bioforge.data.BloodData;
 import com.lucasmellof.bioforge.datagen.ModLang;
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
+import com.lucasmellof.bioforge.gene.Gene;
 import com.lucasmellof.bioforge.gene.GeneType;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -93,7 +94,7 @@ public class SyringeItem extends Item implements GeoItem {
             if (hitResult.getType() != HitResult.Type.ENTITY) return;
             if (!(hitResult instanceof EntityHitResult entityHitResult
                   && entityHitResult.getEntity() instanceof LivingEntity target)) return;
-
+            stack = stack.split(1);
             if (hasBlood(stack)) {
                 inject(stack, target);
                 setBloodData(stack, null);
@@ -108,10 +109,13 @@ public class SyringeItem extends Item implements GeoItem {
 
             triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.full");
             addGenes(stack, genes);
-            setBloodData(stack, new BloodData(player.isShiftKeyDown() ? 0xffff5555 : 0xff55ff55, true));
+            setBloodData(stack, new BloodData(player.isShiftKeyDown() ? 0xffff5555 : 0xff55ff55, false));
             entityWithGene.bioforge$clearGenes();
             target.hurt(level.damageSources().cactus(), 1f); // todo: add custom damage source
             player.getCooldowns().addCooldown(this, 10);
+			if (player.addItem(stack)) {
+				player.drop(stack, false);
+			}
         }
     }
 
@@ -119,8 +123,8 @@ public class SyringeItem extends Item implements GeoItem {
         IEntityWithGene entity = (IEntityWithGene) target;
         var genes = getGenes(stack);
 
-        for (Holder<GeneType<?>> gene : genes) {
-            entity.bioforge$addGene(gene.value().create());
+        for (Gene gene : genes) {
+            entity.bioforge$addGene(gene);
         }
 
         clearGenes(stack);
@@ -140,15 +144,15 @@ public class SyringeItem extends Item implements GeoItem {
             tooltipComponents.add(ModLang.ITEM_NO_GENES.as());
         } else {
             tooltipComponents.add(ModLang.ITEM_GENES_LIST.as());
-            for (Holder<GeneType<?>> gene : genes) {
+            for (Gene gene : genes) {
                 tooltipComponents.add(
-                        Component.literal("- ").append(gene.value().name()));
+                        Component.literal("- ").append(gene.getType().name()));
             }
         }
     }
 
-    public static Set<Holder<GeneType<?>>> getGenes(ItemStack stack) {
-        HolderSet<GeneType<?>> t = stack.get(ModComponentTypes.GENE.get());
+    public static Set<Gene> getGenes(ItemStack stack) {
+        List<Gene> t = stack.get(ModComponentTypes.GENE.get());
         if (t == null) {
             return Set.of();
         }
@@ -156,16 +160,16 @@ public class SyringeItem extends Item implements GeoItem {
         return t.stream().collect(HashSet::new, Set::add, Set::addAll);
     }
 
-    public static void addGene(ItemStack stack, GeneType<?> gene) {
+    public static void addGene(ItemStack stack, Gene gene) {
         var currentGenes = getGenes(stack);
 
-        var newGenes = new HashSet<Holder<GeneType<?>>>();
+        var newGenes = new HashSet<Gene>();
         if (currentGenes != null) {
             newGenes.addAll(currentGenes.stream().toList());
         }
-        newGenes.add(Holder.direct(gene));
+        newGenes.add(gene);
 
-        stack.set(ModComponentTypes.GENE.get(), HolderSet.direct(new ArrayList<>(newGenes)));
+        stack.set(ModComponentTypes.GENE.get(), new ArrayList<>(newGenes));
     }
 
     public static void setBloodData(ItemStack stack, BloodData bloodData) {
@@ -181,18 +185,16 @@ public class SyringeItem extends Item implements GeoItem {
         return data.getFirst();
     }
 
-    public static void addGenes(ItemStack stack, Set<GeneType<?>> genes) {
+    public static void addGenes(ItemStack stack, Set<Gene> genes) {
         var currentGenes = getGenes(stack);
 
-        var newGenes = new HashSet<Holder<GeneType<?>>>();
+        var newGenes = new HashSet<Gene>();
         if (currentGenes != null) {
             newGenes.addAll(currentGenes.stream().toList());
         }
-        for (GeneType<?> gene : genes) {
-            newGenes.add(Holder.direct(gene));
-        }
+		newGenes.addAll(genes);
 
-        stack.set(ModComponentTypes.GENE.get(), HolderSet.direct(new ArrayList<>(newGenes)));
+        stack.set(ModComponentTypes.GENE.get(), new ArrayList<>(newGenes));
     }
 
     public static boolean hasBlood(ItemStack stack) {
@@ -200,20 +202,20 @@ public class SyringeItem extends Item implements GeoItem {
         return !genes.isEmpty() || getBloodData(stack) != null;
     }
 
-    public static void removeGenes(ItemStack stack, Set<Holder<GeneType<?>>> genesToRemove) {
+    public static void removeGenes(ItemStack stack, Set<Gene> genesToRemove) {
         var currentGenes = getGenes(stack);
 
-        var newGenes = new HashSet<Holder<GeneType<?>>>();
+        var newGenes = new HashSet<Gene>();
         if (currentGenes != null) {
             newGenes.addAll(currentGenes.stream().toList());
         }
         newGenes.removeAll(genesToRemove);
 
-        stack.set(ModComponentTypes.GENE.get(), HolderSet.direct(new ArrayList<>(newGenes)));
+        stack.set(ModComponentTypes.GENE.get(), new ArrayList<>(newGenes));
     }
 
     public static void clearGenes(ItemStack stack) {
-        stack.set(ModComponentTypes.GENE.get(), HolderSet.direct(new ArrayList<>()));
+        stack.set(ModComponentTypes.GENE.get(), new ArrayList<>());
     }
 
     @Override

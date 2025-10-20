@@ -2,6 +2,7 @@ package com.lucasmellof.bioforge.registry;
 
 import com.lucasmellof.bioforge.Bioforge;
 import com.lucasmellof.bioforge.data.BloodData;
+import com.lucasmellof.bioforge.gene.Gene;
 import com.lucasmellof.bioforge.gene.GeneCodecs;
 import com.lucasmellof.bioforge.gene.GeneType;
 import net.minecraft.core.HolderSet;
@@ -19,9 +20,9 @@ public class ModComponentTypes {
     public static final DeferredRegister.DataComponents COMPONENT_TYPES =
             DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Bioforge.MODID);
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<HolderSet<GeneType<?>>>> GENE =
-            COMPONENT_TYPES.registerComponentType("gene", it -> it.persistent(GeneCodecs.HOLDER_SET_CODEC)
-                    .networkSynchronized(GeneCodecs.HOLDER_SET_STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<Gene>>> GENE =
+            COMPONENT_TYPES.registerComponentType("genes", it -> it.persistent(Gene.CODEC.listOf())
+                    .networkSynchronized(Gene.STREAM_CODEC_LIST));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<BloodData>>> BLOOD_DATA =
             COMPONENT_TYPES.register("blood_data", () ->

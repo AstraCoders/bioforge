@@ -2,7 +2,6 @@ package com.lucasmellof.bioforge.mixins;
 
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.Gene;
-import com.lucasmellof.bioforge.gene.GeneType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -26,10 +25,10 @@ import java.util.Set;
 public abstract class MixinLivingEntity implements IEntityWithGene {
 
     @Unique
-    private final Set<GeneType<?>> bioforge$genes = new HashSet<>();
+    private final Set<Gene> bioforge$genes = new HashSet<>();
 
     @Override
-    public Set<GeneType<?>> bioforge$getGenes() {
+    public Set<Gene> bioforge$getGenes() {
         return this.bioforge$genes;
     }
 
