@@ -1,6 +1,7 @@
 package com.lucasmellof.bioforge.events;
 
 import com.lucasmellof.bioforge.Const;
+import com.lucasmellof.bioforge.client.renderer.CentrifugeBlockEntityRenderer;
 import com.lucasmellof.bioforge.client.renderer.VialHolderBlockEntityRenderer;
 import com.lucasmellof.bioforge.client.screen.MicroscopeScreen;
 import com.lucasmellof.bioforge.registry.ModBlockEntities;
@@ -20,6 +21,8 @@ public class ClientEvents {
 	@SubscribeEvent
 	static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(ModBlockEntities.VIAL_HOLDER.get(),context -> new VialHolderBlockEntityRenderer());
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.CENTRIFUGE.get(), context -> new CentrifugeBlockEntityRenderer());
 	}
 
 

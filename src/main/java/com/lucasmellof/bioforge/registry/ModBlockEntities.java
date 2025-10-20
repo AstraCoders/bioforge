@@ -1,6 +1,7 @@
 package com.lucasmellof.bioforge.registry;
 
 import com.lucasmellof.bioforge.Const;
+import com.lucasmellof.bioforge.block.entity.CentrifugeBlockEntity;
 import com.lucasmellof.bioforge.block.entity.VialHolderBlockEntity;
 import com.lucasmellof.bioforge.block.entity.MicroscopeBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +21,14 @@ public class ModBlockEntities {
 			BLOCK_ENTITIES.register("vial_holder",
 					() -> BlockEntityType.Builder.of(VialHolderBlockEntity::new,
 							ModBlocks.VIAL_HOLDER_BLOCK.get()
+					).build(null)
+			);
+
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE =
+			BLOCK_ENTITIES.register("centrifuge",
+					() -> BlockEntityType.Builder.of(CentrifugeBlockEntity::new,
+							ModBlocks.CENTRIFUGE_BLOCK.get()
 					).build(null)
 			);
 

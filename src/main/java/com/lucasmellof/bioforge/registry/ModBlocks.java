@@ -1,6 +1,7 @@
 package com.lucasmellof.bioforge.registry;
 
 import com.lucasmellof.bioforge.Const;
+import com.lucasmellof.bioforge.block.CentrifugeBlock;
 import com.lucasmellof.bioforge.block.VialHolderBlock;
 import com.lucasmellof.bioforge.block.MicroscopeBlock;
 import net.minecraft.core.registries.Registries;
@@ -16,6 +17,9 @@ public class ModBlocks {
 
     public static final DeferredHolder<Block, VialHolderBlock> VIAL_HOLDER_BLOCK =
             BLOCKS.register("vial_holder", VialHolderBlock::new);
+
+    public static final DeferredHolder<Block, CentrifugeBlock> CENTRIFUGE_BLOCK =
+            BLOCKS.register("centrifuge", CentrifugeBlock::new);
 
     public static final DeferredHolder<Block, MicroscopeBlock> MICROSCOPE_BLOCK =
             BLOCKS.register("microscope", MicroscopeBlock::new);

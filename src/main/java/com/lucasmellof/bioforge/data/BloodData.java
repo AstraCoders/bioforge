@@ -13,13 +13,14 @@ import java.util.List;
  * @author Rok, Pedro Lucas nmm. Created on 18/10/2025
  * @project bioforge
  */
-public record BloodData(int color) {
+public record BloodData(int color, boolean full) {
 
-    public static final BloodData EMPTY = new BloodData(0xFFFFFF);
+    public static final BloodData EMPTY = new BloodData(0xFFFFFF, false);
 
     public static final Codec<BloodData> CODEC = RecordCodecBuilder.create(instance ->
         instance.group(
-            Codec.INT.fieldOf("color").forGetter(BloodData::color)
+            Codec.INT.fieldOf("color").forGetter(BloodData::color),
+            Codec.BOOL.fieldOf("full").forGetter(BloodData::full)
         ).apply(instance, BloodData::new)
     );
 
@@ -27,6 +28,7 @@ public record BloodData(int color) {
 
     public static final StreamCodec<ByteBuf, BloodData> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.INT, BloodData::color,
+        ByteBufCodecs.BOOL, BloodData::full,
         BloodData::new
     );
 
@@ -62,6 +64,6 @@ public record BloodData(int color) {
     }
 
     public BloodData mix(BloodData data) {
-        return new BloodData(ColorUtils.blend(this.color, data.color, 0.5f));
+        return new BloodData(ColorUtils.blend(this.color, data.color, 0.5f), true);
     }
 }

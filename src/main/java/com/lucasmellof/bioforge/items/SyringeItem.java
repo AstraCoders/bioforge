@@ -108,7 +108,7 @@ public class SyringeItem extends Item implements GeoItem {
 
             triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.full");
             addGenes(stack, genes);
-            setBloodData(stack, new BloodData(player.isShiftKeyDown() ? 0xffff5555 : 0xff55ff55));
+            setBloodData(stack, new BloodData(player.isShiftKeyDown() ? 0xffff5555 : 0xff55ff55, true));
             entityWithGene.bioforge$clearGenes();
             target.hurt(level.damageSources().cactus(), 1f); // todo: add custom damage source
             player.getCooldowns().addCooldown(this, 10);

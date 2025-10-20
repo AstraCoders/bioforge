@@ -103,12 +103,13 @@ public class VialItemRenderer extends GeoItemRenderer<VialItem> {
         List<BloodData> bloodDatas = stack != null ? stack.get(ModComponentTypes.BLOOD_DATA) : null;
 
         String boneName = bone.getName();
-
         if (bloodDatas != null && !bloodDatas.isEmpty()) {
             var count = bloodDatas.size();
-            if (boneName.equalsIgnoreCase("liquid1") ) {
-               int colorWithBlood = bloodDatas.getFirst().color();
-               super.renderRecursively(
+            if (boneName.equalsIgnoreCase("liquid1")) {
+                BloodData first = bloodDatas.getFirst();
+                int colorWithBlood = first.color();
+
+                super.renderRecursively(
                         poseStack,
                         animatable,
                         bone,
@@ -119,11 +120,12 @@ public class VialItemRenderer extends GeoItemRenderer<VialItem> {
                         partialTick,
                         packedLight,
                         packedOverlay,
-                colorWithBlood);
-               return;
+                        colorWithBlood);
+                return;
             }
-            if (boneName.equalsIgnoreCase("liquid2") && count >= 2) {
-                int colorWithBlood = bloodDatas.get(1).color();
+            var full = bloodDatas.getFirst().full();
+            if ((boneName.equalsIgnoreCase("liquid2") && ( full|| count >= 2))) {
+                int colorWithBlood = bloodDatas.size() == 1 ? bloodDatas.getFirst().color() : bloodDatas.get(1).color();
                 super.renderRecursively(
                         poseStack,
                         animatable,
