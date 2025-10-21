@@ -35,7 +35,6 @@ public class SyringeItemRenderer extends GeoItemRenderer<SyringeItem> {
 	public void renderByItem(ItemStack stack, ItemDisplayContext displayContext,
 							 PoseStack poseStack, MultiBufferSource bufferSource,
 							 int packedLight, int packedOverlay) {
-
 		this.currentItemStack = stack;
 
 		super.renderByItem(stack, displayContext, poseStack, bufferSource,

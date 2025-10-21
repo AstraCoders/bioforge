@@ -21,6 +21,11 @@ public class ModLang extends LanguageProvider {
     public static final Lang GENE_PASSIVE = Lang.of("gene.bioforge.passive_gene");
     public static final Lang GENE_AGGRESSIVE = Lang.of("gene.bioforge.aggressive_gene");
 
+    public static final Lang ITEM_MICROSCOPE = Lang.of("block.bioforge.microscope");
+    public static final Lang ITEM_VIAL_HOLDER = Lang.of("block.bioforge.vial");
+    public static final Lang BLOCK_CENTRIFUGE = Lang.of("block.bioforge.centrifuge");
+    public static final Lang BLOCK_VIAL_HOLDER = Lang.of("block.bioforge.vial_holder");
+
     @Override
     protected void addTranslations() {
         ITEM_GROUP_BIOFORGE.add(this, "Bioforge Group");
@@ -29,6 +34,11 @@ public class ModLang extends LanguageProvider {
         ITEM_GENES_LIST.add(this, "Genes:");
         GENE_PASSIVE.add(this, "Passive Gene");
         GENE_AGGRESSIVE.add(this, "Aggressive Gene");
+
+        ITEM_MICROSCOPE.add(this, "Microscope");
+        ITEM_VIAL_HOLDER.add(this, "Vial Holder");
+        BLOCK_CENTRIFUGE.add(this, "Centrifuge");
+        BLOCK_VIAL_HOLDER.add(this, "Vial Holder");
     }
 
     @AllArgsConstructor(staticName = "of")

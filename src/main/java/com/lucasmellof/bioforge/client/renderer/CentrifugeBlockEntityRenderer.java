@@ -35,10 +35,13 @@ public class CentrifugeBlockEntityRenderer extends GeoBlockRenderer<CentrifugeBl
 //		poseStack.translate(0, -0.03f, 0);
 //		Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, packedLight,packedOverlay,poseStack, bufferSource, Minecraft.getInstance().level, 0);
 //		poseStack.popPose();
+		super.postRender(poseStack, be, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
 	}
 
 	@Override
 	public void renderRecursively(PoseStack poseStack, CentrifugeBlockEntity be, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
+
+		super.renderRecursively(poseStack, be, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
 		if (!bone.getName().contains("vial")) {
 			super.renderRecursively(poseStack, be, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
 		}

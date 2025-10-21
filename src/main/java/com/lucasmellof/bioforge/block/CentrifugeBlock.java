@@ -68,7 +68,7 @@ public class CentrifugeBlock extends HorizontalDirectionalBlock implements Entit
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
+		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 	}
 
     @Override
