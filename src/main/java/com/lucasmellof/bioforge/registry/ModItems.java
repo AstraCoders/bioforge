@@ -18,5 +18,5 @@ public class ModItems {
     public static final DeferredHolder<Item, VialItem> VIAL_ITEM = ITEMS.register("vial", VialItem::new);
     public static final DeferredHolder<Item, BlockItem> MICROCOPE_ITEM = ITEMS.register("microscope", (prop) -> new BlockItem(ModBlocks.MICROSCOPE_BLOCK.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> VIAL_HOLDER_ITEM = ITEMS.register("vial_holder", (prop) -> new BlockItem(ModBlocks.VIAL_HOLDER_BLOCK.get(), new Item.Properties()));
-
+    public static final DeferredHolder<Item, BlockItem> CENTRIFUGE_ITEM = ITEMS.register("centrifuge", (prop) -> new BlockItem(ModBlocks.CENTRIFUGE_BLOCK.get(), new Item.Properties()));
 }

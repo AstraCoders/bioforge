@@ -24,6 +24,7 @@ public class Bioforge {
 		ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 		ModItems.ITEMS.register(modEventBus);
 		ModArguments.ARGUMENTS.register(modEventBus);
+		ModCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
 	}
 
 }

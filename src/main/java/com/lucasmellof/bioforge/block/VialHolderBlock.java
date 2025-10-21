@@ -51,7 +51,7 @@ public class VialHolderBlock extends HorizontalDirectionalBlock implements Entit
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getClockWise());
+		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
 	}
 
     @Override
