@@ -6,7 +6,9 @@ import com.lucasmellof.bioforge.datagen.ModLang;
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.Gene;
 import com.lucasmellof.bioforge.gene.GeneType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.animal.Animal;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -33,7 +35,10 @@ public class ServerEvents {
         IEntityWithGene genes = (IEntityWithGene) ev.getTarget();
         ev.getEntity().sendSystemMessage(ModLang.ITEM_GENES_LIST.as());
         for (Gene gene : genes.bioforge$getGenes()) {
-            ev.getEntity().sendSystemMessage(gene.getType().name());
+            ev.getEntity().sendSystemMessage(Component.literal(gene.getType().name() + " level: " + gene.getLevel()));
+        }
+        if (ev.getTarget() instanceof Animal ani) {
+            ev.getEntity().sendSystemMessage(Component.literal(ani.getAge() + ""));
         }
     }
 }

@@ -14,21 +14,21 @@ public class ModLang extends LanguageProvider {
         super(output, Const.MOD_ID, "en_us");
     }
 
-    public static final Lang ITEM_GROUP_BIOFORGE = Lang.of("itemGroup.bioforge");
-    public static final Lang ITEM_SYRINGE = Lang.of("item.bioforge.syringe");
-    public static final Lang ITEM_NO_GENES = Lang.of("item.bioforge.syringe.no_genes");
-    public static final Lang ITEM_GENES_LIST = Lang.of("item.bioforge.syringe.genes");
-    public static final Lang GENE_PASSIVE = Lang.of("gene.bioforge.passive_gene");
-    public static final Lang GENE_AGGRESSIVE = Lang.of("gene.bioforge.aggressive_gene");
+    public static final Lang ITEM_GROUP_BIOFORGE = Lang.of("itemGroup.biogene");
+    public static final Lang ITEM_SYRINGE = Lang.of("item.biogene.syringe");
+    public static final Lang ITEM_NO_GENES = Lang.of("item.biogene.syringe.no_genes");
+    public static final Lang ITEM_GENES_LIST = Lang.of("item.biogene.syringe.genes");
+    public static final Lang GENE_PASSIVE = Lang.of("gene.biogene.passive_gene");
+    public static final Lang GENE_AGGRESSIVE = Lang.of("gene.biogene.aggressive_gene");
 
-    public static final Lang ITEM_MICROSCOPE = Lang.of("block.bioforge.microscope");
-    public static final Lang ITEM_VIAL_HOLDER = Lang.of("block.bioforge.vial");
-    public static final Lang BLOCK_CENTRIFUGE = Lang.of("block.bioforge.centrifuge");
-    public static final Lang BLOCK_VIAL_HOLDER = Lang.of("block.bioforge.vial_holder");
+    public static final Lang ITEM_MICROSCOPE = Lang.of("block.biogene.microscope");
+    public static final Lang ITEM_VIAL_HOLDER = Lang.of("block.biogene.vial");
+    public static final Lang BLOCK_CENTRIFUGE = Lang.of("block.biogene.centrifuge");
+    public static final Lang BLOCK_VIAL_HOLDER = Lang.of("block.biogene.vial_holder");
 
     @Override
     protected void addTranslations() {
-        ITEM_GROUP_BIOFORGE.add(this, "Bioforge Group");
+        ITEM_GROUP_BIOFORGE.add(this, "BioGene Group");
         ITEM_SYRINGE.add(this, "Syringe");
         ITEM_NO_GENES.add(this, "No Genes");
         ITEM_GENES_LIST.add(this, "Genes:");

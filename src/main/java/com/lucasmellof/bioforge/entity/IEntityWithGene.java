@@ -15,13 +15,12 @@ public interface IEntityWithGene {
 	Set<Gene> bioforge$getGenes();
 
 	default boolean bioforge$addGene(Gene gene) {
-		if (this.bioforge$hasGene(gene.getType())) {
-			return false;
-		}
 		if (!gene.canApplyGene(this, gene)) {
 			return false;
 		}
-		gene.addGene(this);
+		if (!gene.addGene(this)) {
+			return false;
+		}
 		return bioforge$getGenes().add(gene);
 	}
 

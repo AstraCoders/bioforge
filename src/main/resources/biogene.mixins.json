@@ -4,6 +4,8 @@
 	"package": "com.lucasmellof.bioforge.mixins",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"MixinAnimal",
+		"MixinBreedGoal",
 		"MixinLivingEntity",
 		"MixinMeleeAttackGoal"
 	],

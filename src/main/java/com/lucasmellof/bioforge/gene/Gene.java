@@ -25,8 +25,7 @@ public class Gene {
         ResourceLocation.CODEC.fieldOf("id").forGetter(Gene::getId),
         GeneType.CODEC.fieldOf("type").forGetter(Gene::getType),
         Codec.INT.fieldOf("level").forGetter(Gene::getLevel)
-    ).apply(it, Gene::new
-    ));
+    ).apply(it, Gene::new));
 
     public static final StreamCodec<ByteBuf, Gene> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
     public static final StreamCodec<ByteBuf, List<Gene>> STREAM_CODEC_LIST = ByteBufCodecs.fromCodec(CODEC.listOf());
@@ -50,7 +49,6 @@ public class Gene {
         this.action = type.action().get();
     }
 
-
     public void tick() {}
 
     public boolean canApplyGene(IEntityWithGene entity, Gene gene) {
@@ -71,25 +69,27 @@ public class Gene {
                 return true;
             }
         }
-        if (!entity.bioforge$hasGene(gene.getType())) {
-            return true;
-        }
 
         var existing = entity.bioforge$getGene(gene.getType());
-		return existing == null || existing.getLevel() < gene.getLevel();
+        if (existing == null) return true;
+		return existing.getLevel() >= gene.getLevel();
 	}
 
     public boolean removeGene(IEntityWithGene genes) {
         return true;
     }
 
-    public void addGene(IEntityWithGene entity) {
+    public boolean addGene(IEntityWithGene entity) {
         var existing = entity.bioforge$getGene(getType());
-        if (existing == null || existing.getLevel() >= this.getLevel()) {
-            return;
+        if (existing == null) {
+            return true;
+        }
+        if (existing.getLevel() < this.getLevel()) {
+            return false;
         }
 
         existing.addLevel(1);
+        return false;
     }
 
     @SafeVarargs

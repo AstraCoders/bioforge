@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 
 @Mod(Bioforge.MODID)
 public class Bioforge {
-	public static final String MODID = "bioforge";
+	public static final String MODID = "biogene";
 	private static final Logger LOGGER = LogUtils.getLogger();
 
 	public Bioforge(IEventBus modEventBus, ModContainer modContainer) {
