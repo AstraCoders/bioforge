@@ -4,7 +4,8 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"2": "biogene:block/vial_holder",
-		"particle": "biogene:block/vial_holder"
+		"particle": "biogene:block/vial_holder",
+		"all": "biogene:block/vial_holder"
 	},
 	"elements": [
 		{

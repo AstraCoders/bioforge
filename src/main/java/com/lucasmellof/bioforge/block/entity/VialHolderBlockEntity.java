@@ -103,13 +103,13 @@ public class VialHolderBlockEntity extends SyncableBlockEntity implements GeoBlo
         if (VialItem.isFull(vial)) return ItemInteractionResult.FAIL;
         var s = handItem.split(1);
         var blood = SyringeItem.getBloodData(s);
-		if (blood != null && VialItem.addBlood(player, vial, blood)) {
-			SyringeItem.setBloodData(s, null);
-			if (player.addItem(s)) {
-				player.drop(s, false);
-			}
+        if (blood != null && VialItem.addBlood(player, vial, blood)) {
+            SyringeItem.setBloodData(s, null);
+            if (player.addItem(s)) {
+                player.drop(s, false);
+            }
             sync();
-		}
+        }
 
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -137,7 +137,7 @@ public class VialHolderBlockEntity extends SyncableBlockEntity implements GeoBlo
 
     public void onRemove(BlockState state, Level level, BlockPos pos) {
         if (!level.isClientSide) {
-            for(int i = 0; i < inventory.getSlots(); i++) {
+            for (int i = 0; i < inventory.getSlots(); i++) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(i));
             }
         }

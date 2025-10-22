@@ -32,8 +32,8 @@ public class ModBlockEntities {
 					).build(null)
 			);
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MicroscopeBlockEntity>> MICROSCOPE_BE =
-			BLOCK_ENTITIES.register("microscope_be", () ->
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MicroscopeBlockEntity>> MICROSCOPE =
+			BLOCK_ENTITIES.register("microscope", () ->
 					BlockEntityType.Builder.of(MicroscopeBlockEntity::new,
 							ModBlocks.MICROSCOPE_BLOCK.get()).build(null));
 }

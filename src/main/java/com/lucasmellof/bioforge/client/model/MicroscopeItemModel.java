@@ -2,15 +2,14 @@ package com.lucasmellof.bioforge.client.model;
 
 import com.lucasmellof.bioforge.Const;
 import com.lucasmellof.bioforge.items.GeckoBlockItem;
-import com.lucasmellof.bioforge.items.VialItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
 /*
  * @author Lucasmellof, Lucas de Mello Freitas created on 18/10/2025
  */
-public class CentrifugeItemModel extends GeoModel<GeckoBlockItem> {
-	private static final ResourceLocation MODEL = Const.of("geo/block/centrifuge.geo.json");
+public class MicroscopeItemModel extends GeoModel<GeckoBlockItem> {
+	private static final ResourceLocation MODEL = Const.of("geo/item/microscope.geo.json");
 	private static final ResourceLocation ANIMATIONS = Const.of("animations/item/vial.animation.json");
 	private static final ResourceLocation TEXTURE = Const.of("textures/block/centrifuge.png");
 

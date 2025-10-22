@@ -20,16 +20,22 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
  * @author Rok, Pedro Lucas nmm. Created on 18/10/2025
  * @project bioforge
  */
-public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
+public class MicroscopeBlockEntity extends SyncableBlockEntity implements MenuProvider, GeoBlockEntity {
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
     private static final int PROCESSING_TIME = 100;
@@ -82,7 +88,7 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
     private int maxProgress = PROCESSING_TIME;
 
     public MicroscopeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.MICROSCOPE_BE.get(), pos, state);
+        super(ModBlockEntities.MICROSCOPE.get(), pos, state);
     }
 
     @Override
@@ -115,6 +121,12 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
         CompoundTag tag = super.getUpdateTag(registries);
         saveAdditional(tag, registries);
         return tag;
+    }
+
+    @Override
+    public void syncCompoundTag(CompoundTag tag, HolderLookup.Provider registries) {
+        tag.put("inventory", itemHandler.serializeNBT(registries));
+        tag.putInt("progress", progress);
     }
 
     @Nullable
@@ -170,5 +182,22 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
                 .append(Component.literal("\n§7═══════════════════════"));
 
         stack.set(ModDataComponents.LORE, java.util.List.of(loreComponent));*/
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        //        controllers.add(new AnimationController<>(this, state -> {
+        //			return NO_VIAL;
+        //        }));
+    }
+
+    public ItemStack getVial(int slot) {
+        return itemHandler.getStackInSlot(slot);
+    }
+
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
     }
 }

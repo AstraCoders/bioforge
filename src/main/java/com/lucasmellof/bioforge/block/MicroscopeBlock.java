@@ -44,7 +44,6 @@ public class MicroscopeBlock extends HorizontalDirectionalBlock implements Entit
         return CODEC;
     }
 
-
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
@@ -68,8 +67,8 @@ public class MicroscopeBlock extends HorizontalDirectionalBlock implements Entit
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+    public @NotNull RenderShape getRenderShape(BlockState state) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
@@ -103,7 +102,7 @@ public class MicroscopeBlock extends HorizontalDirectionalBlock implements Entit
         if (level.isClientSide) {
             return null;
         }
-        return type == ModBlockEntities.MICROSCOPE_BE.get()
+        return type == ModBlockEntities.MICROSCOPE.get()
                 ? (lvl, pos, st, blockEntity) -> MicroscopeBlockEntity.tick(lvl, pos, st, (MicroscopeBlockEntity) blockEntity)
                 : null;
     }

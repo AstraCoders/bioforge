@@ -1,6 +1,7 @@
 package com.lucasmellof.bioforge.block;
 
 import com.lucasmellof.bioforge.block.entity.VialHolderBlockEntity;
+import com.lucasmellof.bioforge.registry.ModItems;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -38,7 +40,7 @@ public class VialHolderBlock extends HorizontalDirectionalBlock implements Entit
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public VialHolderBlock() {
-        super(Properties.ofFullCopy(Blocks.GLASS));
+        super(Properties.ofFullCopy(Blocks.CHAIN));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
@@ -52,6 +54,7 @@ public class VialHolderBlock extends HorizontalDirectionalBlock implements Entit
         return CODEC;
     }
 
+    @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
@@ -109,5 +112,10 @@ public class VialHolderBlock extends HorizontalDirectionalBlock implements Entit
             vialHolder.onRemove(state, level, pos);
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        return ModItems.VIAL_HOLDER_ITEM.get().getDefaultInstance();
     }
 }
