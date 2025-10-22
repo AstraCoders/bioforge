@@ -1,13 +1,10 @@
 package com.lucasmellof.bioforge.registry;
 
-import com.lucasmellof.bioforge.Bioforge;
+import com.lucasmellof.bioforge.BioGeneMod;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -18,12 +15,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModCreativeTab {
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Bioforge.MODID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BioGeneMod.MODID);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TUBE_TAB =
             CREATIVE_MODE_TABS.register("create_hypertubes", () ->
                     CreativeModeTab.builder()
-                            .title(Component.translatable("itemGroup." + Bioforge.MODID))
+                            .title(Component.translatable("itemGroup." + BioGeneMod.MODID))
                             .icon(() -> ModItems.CENTRIFUGE_ITEM.get().getDefaultInstance())
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.MICROCOPE_ITEM.get());

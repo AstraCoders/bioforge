@@ -8,12 +8,12 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 
-@Mod(Bioforge.MODID)
-public class Bioforge {
+@Mod(BioGeneMod.MODID)
+public class BioGeneMod {
 	public static final String MODID = "biogene";
 	private static final Logger LOGGER = LogUtils.getLogger();
 
-	public Bioforge(IEventBus modEventBus, ModContainer modContainer) {
+	public BioGeneMod(IEventBus modEventBus, ModContainer modContainer) {
 		modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
 

@@ -1,12 +1,11 @@
 package com.lucasmellof.bioforge.registry;
 
-import com.lucasmellof.bioforge.Bioforge;
+import com.lucasmellof.bioforge.BioGeneMod;
 import com.lucasmellof.bioforge.commands.arguments.GeneArguments;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.registries.Registries;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /*
@@ -16,7 +15,7 @@ public class ModArguments {
 
 
 	public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENTS =
-			DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, Bioforge.MODID);
+			DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, BioGeneMod.MODID);
 
 	static {
 		var gene = SingletonArgumentInfo.contextFree(GeneArguments::gene);

@@ -29,7 +29,7 @@ public class VialHolderBlockEntityRenderer extends GeoBlockRenderer<VialHolderBl
 		if (item.isEmpty()) return;
 		poseStack.pushPose();
 		poseStack.scale(0.55f, 0.55f, 0.55f);
-		poseStack.translate(0, -0.03f, 0);
+		poseStack.translate(0, 0.5f, 0);
 		Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, packedLight,packedOverlay,poseStack, bufferSource, Minecraft.getInstance().level, 0);
 		poseStack.popPose();
 	}

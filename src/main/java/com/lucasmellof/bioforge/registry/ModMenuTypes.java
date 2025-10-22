@@ -1,6 +1,6 @@
 package com.lucasmellof.bioforge.registry;
 
-import com.lucasmellof.bioforge.Bioforge;
+import com.lucasmellof.bioforge.BioGeneMod;
 import com.lucasmellof.bioforge.block.entity.MicroscopeBlockEntity;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
 import net.minecraft.core.registries.Registries;
@@ -15,7 +15,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  */
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS = 
-            DeferredRegister.create(Registries.MENU, Bioforge.MODID);
+            DeferredRegister.create(Registries.MENU, BioGeneMod.MODID);
 
     public static final DeferredHolder<MenuType<?>, MenuType<MicroscopeMenu>> MICROSCOPE_MENU =
             MENUS.register("microscope_menu", () ->

@@ -2,16 +2,16 @@
   "multipart": [
 
     { "when": { "facing": "north" },
-      "apply": { "model": "bioforge:block/microscope", "uvlock": false }
+      "apply": { "model": "biogene:block/microscope", "uvlock": false }
     },
     { "when": { "facing": "east"  },
-      "apply": { "model": "bioforge:block/microscope", "y": 90, "uvlock": false }
+      "apply": { "model": "biogene:block/microscope", "y": 90, "uvlock": false }
     },
     { "when": { "facing": "south"  },
-      "apply": { "model": "bioforge:block/microscope", "y": 180, "uvlock": false }
+      "apply": { "model": "biogene:block/microscope", "y": 180, "uvlock": false }
     },
     { "when": { "facing": "west"  },
-      "apply": { "model": "bioforge:block/microscope", "y": 270, "uvlock": false }
+      "apply": { "model": "biogene:block/microscope", "y": 270, "uvlock": false }
     }
   ]
 }

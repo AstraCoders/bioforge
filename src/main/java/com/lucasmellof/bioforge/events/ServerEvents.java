@@ -1,11 +1,10 @@
 package com.lucasmellof.bioforge.events;
 
-import com.lucasmellof.bioforge.Bioforge;
+import com.lucasmellof.bioforge.BioGeneMod;
 import com.lucasmellof.bioforge.commands.DebugCommand;
 import com.lucasmellof.bioforge.datagen.ModLang;
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.Gene;
-import com.lucasmellof.bioforge.gene.GeneType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.animal.Animal;
@@ -17,7 +16,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 /*
  * @author Lucasmellof, Lucas de Mello Freitas created on 17/10/2025
  */
-@EventBusSubscriber(modid = Bioforge.MODID)
+@EventBusSubscriber(modid = BioGeneMod.MODID)
 public class ServerEvents {
 
     @SubscribeEvent

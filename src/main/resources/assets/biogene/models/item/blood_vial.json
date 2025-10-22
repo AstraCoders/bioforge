@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"3": "bioforge:item/blood_vial"
+		"3": "biogene:item/blood_vial"
 	},
 	"elements": [
 		{

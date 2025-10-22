@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,6 +30,9 @@ import org.jetbrains.annotations.Nullable;
 public class MicroscopeBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<MicroscopeBlock> CODEC = simpleCodec((prop) -> new MicroscopeBlock());
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+
+    public static final VoxelShape FACING_NORTH_SOUTH = Block.box(5d, 0d, 2.5d, 11d, 11d, 13.5d);
+    public static final VoxelShape FACING_EAST_WEST = Block.box(2.5d, 0d, 5d, 13.5d, 11d, 11D);
 
     public MicroscopeBlock() {
         super(Properties.ofFullCopy(Blocks.CHAIN).noOcclusion().isViewBlocking((state, level, pos) -> false));
@@ -75,6 +81,14 @@ public class MicroscopeBlock extends HorizontalDirectionalBlock implements Entit
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }
+    }
+
+    @Override
+    protected @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+        if (state.getValue(FACING) == Direction.NORTH || state.getValue(FACING) == Direction.SOUTH) {
+            return FACING_NORTH_SOUTH;
+        }
+        return FACING_EAST_WEST;
     }
 
     @Nullable

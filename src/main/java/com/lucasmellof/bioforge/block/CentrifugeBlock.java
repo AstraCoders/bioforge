@@ -27,6 +27,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /*
@@ -34,29 +35,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class CentrifugeBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
-	public static VoxelShape SHAPE = makeShape();
-	public static VoxelShape makeShape(){
-		VoxelShape shape = Shapes.empty();
-		shape = Shapes.join(shape, Shapes.box(0.12343749999999998, 0, 0.21875, 0.8765625, 0.03125, 0.96875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.1875, 0.875, 0.5, 0.3125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.000175, 0.006716249999999979, 0.875, 0.28454999999999997, 0.18796625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.26354, 0.033191250000000005, 0.875, 0.54479, 0.18944125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.22499999999999998, 0.30104, 0.023816249999999983, 0.775, 0.50729, 0.04256624999999997), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.21875, 0.29479, 0.017566250000000005, 0.78125, 0.51354, 0.048816250000000005), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.03125, 0.875, 0.875, 0.5, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.25, 0.03125, 0.84375, 0.75, 0.46875, 0.875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.25, 0.03125, 0.3125, 0.75, 0.46875, 0.34375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.09375, 0.03125, 0.21875, 0.21875, 0.500625, 0.96875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.78125, 0.03125, 0.21875, 0.90625, 0.500625, 0.96875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.75, 0.03125, 0.3125, 0.78125, 0.46875, 0.875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.21875, 0.03125, 0.3125, 0.25, 0.46875, 0.875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.8125, 0.5, 0.21875, 0.875, 0.59375, 0.96875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.1875, 0.5, 0.21875, 0.8125, 0.59375, 0.28125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.1875, 0.5, 0.90625, 0.8125, 0.59375, 0.96875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.1875, 0.515625, 0.28125, 0.8125, 0.578125, 0.90625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.5, 0.21875, 0.1875, 0.59375, 0.96875), BooleanOp.OR);
-		return shape;
-	}
+	public static final VoxelShape FACING_NORTH_SOUTH = Block.box(2d, 0d, 0d, 14d, 9.5d, 16d);
+	public static final VoxelShape FACING_EAST_WEST = Block.box(0d, 0d, 2D, 16d, 9.5d, 14d);
 
 	public static final MapCodec<CentrifugeBlock> CODEC = simpleCodec(properties1 -> new CentrifugeBlock());
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -115,8 +95,11 @@ public class CentrifugeBlock extends HorizontalDirectionalBlock implements Entit
 
 
 	@Override
-	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return SHAPE;
+	protected @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+		if (state.getValue(FACING) == Direction.NORTH || state.getValue(FACING) == Direction.SOUTH) {
+			return FACING_NORTH_SOUTH;
+		}
+		return FACING_EAST_WEST;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.lucasmellof.bioforge.block.entity;
 
-import com.lucasmellof.bioforge.data.BloodData;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
 import com.lucasmellof.bioforge.registry.ModBlockEntities;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
@@ -88,7 +87,7 @@ public class MicroscopeBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.yourmod.microscope");
+        return Component.translatable("block.biogene.microscope");
     }
 
     @Nullable

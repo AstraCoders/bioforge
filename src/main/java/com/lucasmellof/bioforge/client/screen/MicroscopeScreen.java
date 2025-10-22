@@ -1,6 +1,6 @@
 package com.lucasmellof.bioforge.client.screen;
 
-import com.lucasmellof.bioforge.Bioforge;
+import com.lucasmellof.bioforge.BioGeneMod;
 import com.lucasmellof.bioforge.Const;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
 import com.lucasmellof.bioforge.registry.ModItems;
@@ -10,14 +10,12 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.BrewingStandScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 /**
  * @author Rok, Pedro Lucas nmm. Created on 19/10/2025
@@ -25,7 +23,7 @@ import net.minecraft.world.item.Items;
  */
 public class MicroscopeScreen extends AbstractContainerScreen<MicroscopeMenu> {
     private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(Bioforge.MODID, "textures/gui/microscope_gui.png");
+            ResourceLocation.fromNamespaceAndPath(BioGeneMod.MODID, "textures/gui/microscope_gui.png");
     private static final ResourceLocation TEXTURE_ARROW = Const.of("textures/gui/microscope_progress.png");
 
     private static final ItemStack DEFAULT_ITEM = new ItemStack(ModItems.MICROCOPE_ITEM);

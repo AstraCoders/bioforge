@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"2": "bioforge:block/vial_holder",
-		"particle": "bioforge:block/vial_holder"
+		"2": "biogene:block/vial_holder",
+		"particle": "biogene:block/vial_holder"
 	},
 	"elements": [
 		{
