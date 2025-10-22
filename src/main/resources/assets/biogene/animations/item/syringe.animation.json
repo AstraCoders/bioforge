@@ -1,0 +1,60 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.default": {
+			"loop": true
+		},
+		"animation.empty": {
+			"loop": true,
+			"bones": {
+				"cap": {
+					"position": [0, -8, 0]
+				},
+				"liquid2": {
+					"scale": 0
+				},
+				"liquid1": {
+					"scale": 0
+				},
+				"vial": {
+					"position": [0, 4, 0]
+				}
+			}
+		},
+		"animation.filling": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 1,
+			"bones": {
+				"cap": {
+					"position": {
+						"0.0": {
+							"pre": [0, -8, 0],
+							"post": [0, -4, 0]
+						},
+						"0.9583": {
+							"pre": [0, -4, 0],
+							"post": [0, 0, 0]
+						}
+					}
+				},
+				"liquid2": {
+					"scale": {
+						"0.9583": {
+							"pre": [0, 0, 0],
+							"post": [1, 1, 1]
+						}
+					}
+				},
+				"liquid1": {
+					"scale": {
+						"0.0": {
+							"pre": [0, 0, 0],
+							"post": [1, 1, 1]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

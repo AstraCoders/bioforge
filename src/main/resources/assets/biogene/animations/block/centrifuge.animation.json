@@ -1,0 +1,30 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.rotating": {
+			"loop": true,
+			"animation_length": 0.5,
+			"bones": {
+				"pole": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5": {
+							"pre": [0, -360, 0],
+							"post": [0, 0, 0]
+						}
+					}
+				},
+				"vial1": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"animation.idle": {
+			"loop": true
+		}
+	}
+}
