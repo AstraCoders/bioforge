@@ -10,6 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -28,10 +29,34 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
     private static final ResourceLocation TEXTURE_ARROW_1 = Const.of("textures/gui/centrifuge_progress_1.png");
     private static final ResourceLocation TEXTURE_ARROW_2 = Const.of("textures/gui/centrifuge_progress_2.png");
 
+
+    private Button startButton;
+
     public CentrifugeScreen(CentrifugeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageHeight = 166;
         this.imageWidth = 176;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        int relX = (this.width - this.imageWidth) / 2;
+        int relY = (this.height - this.imageHeight) / 2;
+
+        // Botão "Iniciar"
+        this.startButton = this.addRenderableWidget(
+                Button.builder(Component.literal("Start"), button -> {
+                            if (!menu.isCrafting()) {
+                                //Minecraft.getInstance().player.connection.send(
+                                //        new StartCentrifugePacket(menu.blockEntity.getBlockPos())
+                                //); TODO: Carmello vê isso aqui chefe
+                            }
+                        })
+                        .bounds(relX + 119, relY + 57, 50, 20) // posição e tamanho
+                        .build()
+        );
     }
 
     @Override

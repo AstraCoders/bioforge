@@ -27,14 +27,17 @@ public class CentrifugeMenu extends AbstractContainerMenu {
 
         addDataSlots(data);
 
-        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 0, 35, 14));
+        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 0, 92, 12));
 
-        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 1, 35, 55) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
-        });
+        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 1, 104, 35));
+
+        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 2, 92, 59));
+
+        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 3, 68, 59));
+
+        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 4, 56, 35));
+
+        this.addSlot(new SlotItemHandler(blockEntity.getItemHandler(), 5, 68, 12));
 
 
         // Inventário do jogador

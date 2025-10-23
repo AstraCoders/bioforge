@@ -56,7 +56,7 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
     private static final int PROCESSING_TIME = 100;
 
     @Getter
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(6) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();

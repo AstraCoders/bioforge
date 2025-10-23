@@ -135,7 +135,6 @@ public class CentrifugeBlock extends HorizontalDirectionalBlock implements Entit
 		return ModItems.CENTRIFUGE_ITEM.get().getDefaultInstance();
 	}
 
-
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
