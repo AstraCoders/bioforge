@@ -1,6 +1,7 @@
 package com.lucasmellof.bioforge.block;
 
 import com.lucasmellof.bioforge.block.entity.CentrifugeBlockEntity;
+import com.lucasmellof.bioforge.block.entity.MicroscopeBlockEntity;
 import com.lucasmellof.bioforge.registry.ModBlockEntities;
 import com.lucasmellof.bioforge.registry.ModItems;
 import com.mojang.serialization.MapCodec;
@@ -8,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -75,11 +77,6 @@ public class CentrifugeBlock extends HorizontalDirectionalBlock implements Entit
 	}
 
 	@Override
-	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.CENTRIFUGE.get(), CentrifugeBlockEntity::serverTick);
-	}
-
-	@Override
 	protected BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
@@ -104,13 +101,26 @@ public class CentrifugeBlock extends HorizontalDirectionalBlock implements Entit
 		return FACING_EAST_WEST;
 	}
 
+
 	@Override
+	protected @NotNull InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+		if (!level.isClientSide) {
+			BlockEntity blockEntity = level.getBlockEntity(pos);
+			if (blockEntity instanceof CentrifugeBlockEntity microscopeBlockEntity) {
+				player.openMenu(microscopeBlockEntity, pos);
+			}
+		}
+		return InteractionResult.sidedSuccess(level.isClientSide);
+	}
+
+
+	/*@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (level.getBlockEntity(pos) instanceof CentrifugeBlockEntity vialHolder) {
 			return vialHolder.onInteract(stack, player, hand, hitResult);
 		}
 		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-	}
+	}*/
 
 	@Override
 	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
@@ -123,5 +133,17 @@ public class CentrifugeBlock extends HorizontalDirectionalBlock implements Entit
 	@Override
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return ModItems.CENTRIFUGE_ITEM.get().getDefaultInstance();
+	}
+
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		if (level.isClientSide) {
+			return null;
+		}
+		return type == ModBlockEntities.CENTRIFUGE.get()
+				? (lvl, pos, st, blockEntity) -> CentrifugeBlockEntity.tick(lvl, pos, st, (CentrifugeBlockEntity) blockEntity)
+				: null;
 	}
 }

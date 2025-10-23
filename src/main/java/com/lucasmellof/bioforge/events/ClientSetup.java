@@ -1,6 +1,7 @@
 package com.lucasmellof.bioforge.events;
 
 import com.lucasmellof.bioforge.BioGeneMod;
+import com.lucasmellof.bioforge.client.screen.CentrifugeScreen;
 import com.lucasmellof.bioforge.client.screen.MicroscopeScreen;
 import com.lucasmellof.bioforge.registry.ModMenuTypes;
 import net.neoforged.api.distmarker.Dist;
@@ -18,5 +19,6 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.MICROSCOPE_MENU.get(), MicroscopeScreen::new);
+        event.register(ModMenuTypes.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
     }
 }
