@@ -3,6 +3,7 @@ package com.lucasmellof.bioforge.menu;
 import com.lucasmellof.bioforge.block.entity.CentrifugeBlockEntity;
 import com.lucasmellof.bioforge.block.entity.MicroscopeBlockEntity;
 import com.lucasmellof.bioforge.registry.ModMenuTypes;
+import lombok.Getter;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,7 +18,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
  * @project bioforge
  */
 public class CentrifugeMenu extends AbstractContainerMenu {
-    private final CentrifugeBlockEntity blockEntity;
+    @Getter private final CentrifugeBlockEntity blockEntity;
     private final ContainerData data;
 
     public CentrifugeMenu(int containerId, Inventory playerInventory, CentrifugeBlockEntity blockEntity, ContainerData data) {

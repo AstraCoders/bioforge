@@ -4,6 +4,7 @@ import com.lucasmellof.bioforge.BioGeneMod;
 import com.lucasmellof.bioforge.Const;
 import com.lucasmellof.bioforge.menu.CentrifugeMenu;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
+import com.lucasmellof.bioforge.network.C2SStartCentrifugePacket;
 import com.lucasmellof.bioforge.registry.ModItems;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -49,9 +50,8 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         this.startButton = this.addRenderableWidget(
                 Button.builder(Component.literal("Start"), button -> {
                             if (!menu.isCrafting()) {
-                                //Minecraft.getInstance().player.connection.send(
-                                //        new StartCentrifugePacket(menu.blockEntity.getBlockPos())
-                                //); TODO: Carmello vê isso aqui chefe
+                                Minecraft.getInstance().player.connection.send(
+                                        new C2SStartCentrifugePacket(menu.getBlockEntity().getBlockPos()));
                             }
                         })
                         .bounds(relX + 119, relY + 57, 50, 20) // posição e tamanho

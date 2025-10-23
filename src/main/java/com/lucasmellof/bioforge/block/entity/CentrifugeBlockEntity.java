@@ -199,7 +199,7 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
 
     private <E extends GeoAnimatable> PlayState controller(AnimationState<E> state) {
         // Define qual animação deve rodar
-        if (mixing > 0) {
+        if (this.progress < this.maxProgress && this.start) {
             state.setAndContinue(ROTATING);
         } else {
             state.setAndContinue(IDLE);
@@ -216,19 +216,19 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
         Containers.dropContents(level, worldPosition, items);
     }
 
+    private boolean start = false;
     public static void tick(Level level, BlockPos pos, BlockState state, CentrifugeBlockEntity blockEntity) {
         if (level.isClientSide) return;
 
         ItemStack inputStack = blockEntity.itemHandler.getStackInSlot(INPUT_SLOT);
 
-        if (!inputStack.isEmpty() && hasBloodData(inputStack)) {
+        if (blockEntity.start && !inputStack.isEmpty() && hasBloodData(inputStack)) {
             blockEntity.progress++;
 
             if (blockEntity.progress >= blockEntity.maxProgress) {
                 blockEntity.progress = 0;
+                blockEntity.start = false;
             }
-        } else {
-            blockEntity.progress = 0;
         }
 
         setChanged(level, pos, state);
@@ -297,5 +297,10 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
             return ItemStack.EMPTY;
         }
         return itemHandler.getStackInSlot(slot);
+    }
+
+    public void startCentrifuge(BlockPos pos, Player player) {
+        this.start = true;
+        this.triggerAnim("controller", "rotating");
     }
 }

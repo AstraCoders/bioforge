@@ -108,8 +108,7 @@ public class SyringeItem extends Item implements GeoItem {
             //TODO: var bloodData = entityWithGene.bioforge$getBloodData();
 
             triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.full");
-            addGenes(stack, genes);
-            setBloodData(stack, new BloodData(player.isShiftKeyDown() ? 0xffff5555 : 0xff55ff55, false));
+            setBloodData(stack, new BloodData(player.isShiftKeyDown() ? 0xffff5555 : 0xff55ff55, false, new ArrayList<>(genes), false));
             entityWithGene.bioforge$clearGenes();
             target.hurt(level.damageSources().cactus(), 1f); // todo: add custom damage source
             player.getCooldowns().addCooldown(this, 10);
@@ -139,12 +138,12 @@ public class SyringeItem extends Item implements GeoItem {
     @Override
     public void appendHoverText(
             ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        var genes = getGenes(stack);
-        if (genes.isEmpty()) {
+        var blood = getBloodData(stack);
+        if (blood == null) {
             tooltipComponents.add(ModLang.ITEM_NO_GENES.as());
-        } else {
+        } else if(blood.discovered()) {
             tooltipComponents.add(ModLang.ITEM_GENES_LIST.as());
-            for (Gene gene : genes) {
+            for (Gene gene : blood.genes()) {
                 tooltipComponents.add(
                         Component.literal("- ").append(gene.getType().name()));
             }

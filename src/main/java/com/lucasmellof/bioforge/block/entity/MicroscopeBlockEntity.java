@@ -1,5 +1,6 @@
 package com.lucasmellof.bioforge.block.entity;
 
+import com.lucasmellof.bioforge.data.BloodData;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
 import com.lucasmellof.bioforge.registry.ModBlockEntities;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
@@ -29,6 +30,8 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
+
 /**
  * @author Rok, Pedro Lucas nmm. Created on 18/10/2025
  * @project bioforge
@@ -55,8 +58,7 @@ public class MicroscopeBlockEntity extends SyncableBlockEntity implements MenuPr
         public boolean isItemValid(int slot, ItemStack stack) {
             return switch (slot) {
                 case INPUT_SLOT -> stack.has(ModComponentTypes.BLOOD_DATA);
-                case OUTPUT_SLOT -> false;
-                default -> false;
+				default -> false;
             };
         }
     };
@@ -174,6 +176,10 @@ public class MicroscopeBlockEntity extends SyncableBlockEntity implements MenuPr
         ItemStack outputStack = inputStack.copy();
         blockEntity.itemHandler.setStackInSlot(OUTPUT_SLOT, outputStack);
         inputStack.shrink(1);
+        var data = outputStack.get(ModComponentTypes.BLOOD_DATA);
+        if (data == null) return;
+        List<BloodData> list = data.stream().map(BloodData::discover).toList();
+        outputStack.set(ModComponentTypes.BLOOD_DATA, list);
 
         // Adiciona informações na lore do item
         /*Component loreComponent = Component.literal("§7═══ Análise do Microscópio ═══")

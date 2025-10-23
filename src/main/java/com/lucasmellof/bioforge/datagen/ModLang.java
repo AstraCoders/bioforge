@@ -18,7 +18,7 @@ public class ModLang extends LanguageProvider {
     public static final Lang ITEM_SYRINGE = Lang.of("item.biogene.syringe");
     public static final Lang ITEM_NO_GENES = Lang.of("item.biogene.syringe.no_genes");
     public static final Lang ITEM_GENES_LIST = Lang.of("item.biogene.syringe.genes");
-    public static final Lang GENE_PASSIVE = Lang.of("gene.biogene.passive_gene");
+    public static final Lang GENE_BREEDABLE = Lang.of("gene.biogene.breedable_gene");
     public static final Lang GENE_AGGRESSIVE = Lang.of("gene.biogene.aggressive_gene");
 
     public static final Lang ITEM_MICROSCOPE = Lang.of("block.biogene.microscope");
@@ -32,7 +32,7 @@ public class ModLang extends LanguageProvider {
         ITEM_SYRINGE.add(this, "Syringe");
         ITEM_NO_GENES.add(this, "No Genes");
         ITEM_GENES_LIST.add(this, "Genes:");
-        GENE_PASSIVE.add(this, "Passive Gene");
+        GENE_BREEDABLE.add(this, "Breedable Gene");
         GENE_AGGRESSIVE.add(this, "Aggressive Gene");
 
         ITEM_MICROSCOPE.add(this, "Microscope");

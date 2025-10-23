@@ -1,0 +1,12 @@
+{
+  "block.biogene.centrifuge": "Centrifuge",
+  "block.biogene.microscope": "Microscope",
+  "block.biogene.vial": "Vial Holder",
+  "block.biogene.vial_holder": "Vial Holder",
+  "gene.biogene.aggressive_gene": "Aggressive Gene",
+  "gene.biogene.breedable_gene": "Breedable Gene",
+  "item.biogene.syringe": "Syringe",
+  "item.biogene.syringe.genes": "Genes:",
+  "item.biogene.syringe.no_genes": "No Genes",
+  "itemGroup.biogene": "BioGene Group"
+}
