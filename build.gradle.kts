@@ -123,11 +123,9 @@ dependencies {
 }
 
 tasks.withType(JavaExec::class) {
-	//javaLauncher = javaToolchains.launcherFor {
-	//	vendor = JvmVendorSpec.JETBRAINS
-	//	languageVersion = java.toolchain.languageVersion
-	//}
-	//jvmArgs("-XX:+AllowEnhancedClassRedefinition")
+	if (javaLauncher.get().metadata.vendor == "JetBrains") {
+		jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
+	}
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -41,14 +41,13 @@ public class CentrifugeBlockEntityRenderer extends GeoBlockRenderer<CentrifugeBl
 	@Override
 	public void renderRecursively(PoseStack poseStack, CentrifugeBlockEntity be, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
 
-		super.renderRecursively(poseStack, be, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
 		if (!bone.getName().contains("vial")) {
 			super.renderRecursively(poseStack, be, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+			return;
 		}
 		if (bone.getName().equals("vial1") && be.getItem(0).isEmpty()) {
 			return;
 		}
-
 		if (bone.getName().equals("vial2") && be.getItem(1).isEmpty()) {
 			return;
 		}

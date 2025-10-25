@@ -67,13 +67,16 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return switch (slot) {
-                case INPUT_SLOT -> stack.has(ModComponentTypes.BLOOD_DATA);
-                case OUTPUT_SLOT -> false;
-                default -> false;
-            };
-        }
-    };
+			if (!stack.has(ModComponentTypes.BLOOD_DATA)) return false;
+			ItemStack existingStack = this.getStackInSlot(slot);
+			return existingStack.isEmpty();
+		}
+
+		@Override
+		protected int getStackLimit(int slot, ItemStack stack) {
+			return 1;
+		}
+	};
 
     public final ContainerData data = new ContainerData() {
         @Override
@@ -228,6 +231,7 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
             if (blockEntity.progress >= blockEntity.maxProgress) {
                 blockEntity.progress = 0;
                 blockEntity.start = false;
+				blockEntity.finish();
             }
         }
 
@@ -303,4 +307,8 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
         this.start = true;
         this.triggerAnim("controller", "rotating");
     }
+
+	public void finish() {
+		mixVials();
+	}
 }

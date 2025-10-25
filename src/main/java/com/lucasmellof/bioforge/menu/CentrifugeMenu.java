@@ -73,49 +73,95 @@ public class CentrifugeMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        ItemStack stack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
+		ItemStack stack = ItemStack.EMPTY;
+		Slot slot = this.slots.get(index);
 
-        if (slot.hasItem()) {
-            ItemStack stackInSlot = slot.getItem();
-            stack = stackInSlot.copy();
+		if (slot != null && slot.hasItem()) {
+			ItemStack stackInSlot = slot.getItem();
+			stack = stackInSlot.copy();
 
-            // Se o item está no slot do microscópio (índice 0)
-            if (index == 0) {
-                if (!this.moveItemStackTo(stackInSlot, 1, 37, true)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-            // Se o item está no inventário do jogador
-            else {
-                // Tenta mover para o slot do microscópio
-                if (blockEntity != null && blockEntity.getItemHandler().isItemValid(0, stackInSlot)) {
-                    if (!this.moveItemStackTo(stackInSlot, 0, 1, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                // Move entre hotbar e inventário
-                else if (index < 28) {
-                    if (!this.moveItemStackTo(stackInSlot, 28, 37, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!this.moveItemStackTo(stackInSlot, 1, 28, false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
+			int containerSlots = blockEntity != null ? blockEntity.getItemHandler().getSlots() : 6;
+			int totalSlots = this.slots.size();
+			int playerInvStart = containerSlots;
+			int hotbarStart = totalSlots - 9;
 
-            if (stackInSlot.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
+			if (index < containerSlots) {
+				// From container to player inventory/hotbar
+				if (!this.moveItemStackTo(stackInSlot, playerInvStart, totalSlots, true)) {
+					return ItemStack.EMPTY;
+				}
+			} else {
+				// From player inventory/hotbar to container slots
+				boolean movedToContainer = false;
+				if (blockEntity != null) {
+					// Try inserting into each handler slot explicitly so items go into the first valid slot
+					for (int i = 0; i < containerSlots; i++) {
+						// If stack is empty stop
+						if (stackInSlot.isEmpty()) break;
+						// Try to insert into the handler slot using the underlying ItemStackHandler
+						ItemStack before = stackInSlot.copy();
+						stackInSlot = blockEntity.getItemHandler().insertItem(i, stackInSlot, false);
+						// If insert changed the stack, we moved something
+						if (stackInSlot.getCount() != before.getCount()) {
+							movedToContainer = true;
+						}
+					}
+					// Update the slot reference after manipulating underlying handler
+					if (movedToContainer) {
+						// sync slot contents
+						// Attempt to reflect changes in the menu's slot instances
+						// If the original slot is now empty, set it, otherwise mark changed
+						if (stackInSlot.isEmpty()) {
+							slot.set(ItemStack.EMPTY);
+						} else {
+							slot.setChanged();
+						}
+					} else {
+						// Fallback to standard move between player inv/hotbar if nothing fit into container
+						if (!this.moveItemStackTo(stackInSlot, 0, containerSlots, false)) {
+							if (index >= playerInvStart && index < hotbarStart) {
+								if (!this.moveItemStackTo(stackInSlot, hotbarStart, totalSlots, false)) {
+									return ItemStack.EMPTY;
+								}
+							} else if (index >= hotbarStart && index < totalSlots) {
+								if (!this.moveItemStackTo(stackInSlot, playerInvStart, hotbarStart, false)) {
+									return ItemStack.EMPTY;
+								}
+							} else {
+								return ItemStack.EMPTY;
+							}
+						}
+					}
+				} else {
+					// No block entity (client-side menu), fall back to default behavior
+					if (!this.moveItemStackTo(stackInSlot, 0, containerSlots, false)) {
+						if (index >= playerInvStart && index < hotbarStart) {
+							if (!this.moveItemStackTo(stackInSlot, hotbarStart, totalSlots, false)) {
+								return ItemStack.EMPTY;
+							}
+						} else if (index >= hotbarStart && index < totalSlots) {
+							if (!this.moveItemStackTo(stackInSlot, playerInvStart, hotbarStart, false)) {
+								return ItemStack.EMPTY;
+							}
+						} else {
+							return ItemStack.EMPTY;
+						}
+					}
+				}
+			}
 
-            if (stackInSlot.getCount() == stack.getCount()) {
-                return ItemStack.EMPTY;
-            }
+			if (stackInSlot.isEmpty()) {
+				slot.set(ItemStack.EMPTY);
+			} else {
+				slot.setChanged();
+			}
 
-            slot.onTake(player, stackInSlot);
-        }
+			if (stackInSlot.getCount() == stack.getCount()) {
+				return ItemStack.EMPTY;
+			}
+
+			slot.onTake(player, stackInSlot);
+		}
 
         return stack;
     }
