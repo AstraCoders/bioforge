@@ -3,9 +3,12 @@ package com.lucasmellof.bioforge.block.entity;
 import com.lucasmellof.bioforge.data.BloodData;
 import com.lucasmellof.bioforge.items.VialItem;
 import com.lucasmellof.bioforge.menu.CentrifugeMenu;
+import com.lucasmellof.bioforge.network.C2SStartCentrifugePacket;
+import com.lucasmellof.bioforge.network.S2CStopCentrifugePacket;
 import com.lucasmellof.bioforge.registry.ModBlockEntities;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -32,6 +35,7 @@ import net.minecraft.world.level.block.entity.CrafterBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -53,7 +57,7 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
 
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
-    private static final int PROCESSING_TIME = 100;
+    private static final int PROCESSING_TIME = 120;
 
     @Getter
     private final ItemStackHandler itemHandler = new ItemStackHandler(6) {
@@ -208,7 +212,7 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
             state.setAndContinue(IDLE);
         }
 
-        return PlayState.CONTINUE;
+        return PlayState.STOP;
     }
 
     public void dropContents() {
@@ -308,7 +312,14 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
         this.triggerAnim("controller", "rotating");
     }
 
+    public void stopCentrifuge(BlockPos pos, Player player) {
+        this.start = false;
+        this.triggerAnim("controller", "idle");
+    }
+
 	public void finish() {
 		mixVials();
+        PacketDistributor.sendToAllPlayers(
+                new S2CStopCentrifugePacket(this.getBlockPos()));
 	}
 }

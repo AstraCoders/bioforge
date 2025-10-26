@@ -1,7 +1,6 @@
 package com.lucasmellof.bioforge.menu;
 
 import com.lucasmellof.bioforge.block.entity.CentrifugeBlockEntity;
-import com.lucasmellof.bioforge.block.entity.MicroscopeBlockEntity;
 import com.lucasmellof.bioforge.registry.ModMenuTypes;
 import lombok.Getter;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,13 +11,15 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Rok, Pedro Lucas nmm. Created on 19/10/2025
  * @project bioforge
  */
 public class CentrifugeMenu extends AbstractContainerMenu {
-    @Getter private final CentrifugeBlockEntity blockEntity;
+    @Getter
+    private final CentrifugeBlockEntity blockEntity;
     private final ContainerData data;
 
     public CentrifugeMenu(int containerId, Inventory playerInventory, CentrifugeBlockEntity blockEntity, ContainerData data) {
@@ -72,96 +73,56 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-		ItemStack stack = ItemStack.EMPTY;
-		Slot slot = this.slots.get(index);
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
+        ItemStack stack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
-			ItemStack stackInSlot = slot.getItem();
-			stack = stackInSlot.copy();
+        if (slot != null && slot.hasItem()) {
+            ItemStack slotStack = slot.getItem();
+            stack = slotStack.copy();
 
-			int containerSlots = blockEntity != null ? blockEntity.getItemHandler().getSlots() : 6;
-			int totalSlots = this.slots.size();
-			int playerInvStart = containerSlots;
-			int hotbarStart = totalSlots - 9;
 
-			if (index < containerSlots) {
-				// From container to player inventory/hotbar
-				if (!this.moveItemStackTo(stackInSlot, playerInvStart, totalSlots, true)) {
-					return ItemStack.EMPTY;
-				}
-			} else {
-				// From player inventory/hotbar to container slots
-				boolean movedToContainer = false;
-				if (blockEntity != null) {
-					// Try inserting into each handler slot explicitly so items go into the first valid slot
-					for (int i = 0; i < containerSlots; i++) {
-						// If stack is empty stop
-						if (stackInSlot.isEmpty()) break;
-						// Try to insert into the handler slot using the underlying ItemStackHandler
-						ItemStack before = stackInSlot.copy();
-						stackInSlot = blockEntity.getItemHandler().insertItem(i, stackInSlot, false);
-						// If insert changed the stack, we moved something
-						if (stackInSlot.getCount() != before.getCount()) {
-							movedToContainer = true;
-						}
-					}
-					// Update the slot reference after manipulating underlying handler
-					if (movedToContainer) {
-						// sync slot contents
-						// Attempt to reflect changes in the menu's slot instances
-						// If the original slot is now empty, set it, otherwise mark changed
-						if (stackInSlot.isEmpty()) {
-							slot.set(ItemStack.EMPTY);
-						} else {
-							slot.setChanged();
-						}
-					} else {
-						// Fallback to standard move between player inv/hotbar if nothing fit into container
-						if (!this.moveItemStackTo(stackInSlot, 0, containerSlots, false)) {
-							if (index >= playerInvStart && index < hotbarStart) {
-								if (!this.moveItemStackTo(stackInSlot, hotbarStart, totalSlots, false)) {
-									return ItemStack.EMPTY;
-								}
-							} else if (index >= hotbarStart && index < totalSlots) {
-								if (!this.moveItemStackTo(stackInSlot, playerInvStart, hotbarStart, false)) {
-									return ItemStack.EMPTY;
-								}
-							} else {
-								return ItemStack.EMPTY;
-							}
-						}
-					}
-				} else {
-					// No block entity (client-side menu), fall back to default behavior
-					if (!this.moveItemStackTo(stackInSlot, 0, containerSlots, false)) {
-						if (index >= playerInvStart && index < hotbarStart) {
-							if (!this.moveItemStackTo(stackInSlot, hotbarStart, totalSlots, false)) {
-								return ItemStack.EMPTY;
-							}
-						} else if (index >= hotbarStart && index < totalSlots) {
-							if (!this.moveItemStackTo(stackInSlot, playerInvStart, hotbarStart, false)) {
-								return ItemStack.EMPTY;
-							}
-						} else {
-							return ItemStack.EMPTY;
-						}
-					}
-				}
-			}
+            if (index < 6) {
+                if (!this.moveItemStackTo(slotStack, 6, 42, true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                boolean movedItem = false;
+                for (int i = 0; i < 6; i++) {
+                    Slot centrifugeSlot = this.slots.get(i);
 
-			if (stackInSlot.isEmpty()) {
-				slot.set(ItemStack.EMPTY);
-			} else {
-				slot.setChanged();
-			}
+                    if (!centrifugeSlot.hasItem()) {
+                        ItemStack singleItem = slotStack.copy();
+                        singleItem.setCount(1);
+                        centrifugeSlot.set(singleItem);
+                        slotStack.shrink(1);
+                        movedItem = true;
+                        break;
+                    } else if (centrifugeSlot.getItem().getCount() < 1 &&
+                               ItemStack.isSameItemSameComponents(centrifugeSlot.getItem(), slotStack)) {
+                        centrifugeSlot.getItem().grow(1);
+                        slotStack.shrink(1);
+                        movedItem = true;
+                        break;
+                    }
+                }
+                if (!movedItem) {
+                    return ItemStack.EMPTY;
+                }
+            }
 
-			if (stackInSlot.getCount() == stack.getCount()) {
-				return ItemStack.EMPTY;
-			}
+            if (slotStack.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
 
-			slot.onTake(player, stackInSlot);
-		}
+            if (slotStack.getCount() == stack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, slotStack);
+        }
 
         return stack;
     }

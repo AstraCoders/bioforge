@@ -52,11 +52,15 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
                             if (!menu.isCrafting()) {
                                 Minecraft.getInstance().player.connection.send(
                                         new C2SStartCentrifugePacket(menu.getBlockEntity().getBlockPos()));
+                                button.active = false;
                             }
                         })
                         .bounds(relX + 119, relY + 57, 50, 20) // posição e tamanho
                         .build()
         );
+        if (this.menu.isCrafting()) {
+            this.startButton.active = false;
+        }
     }
 
     @Override
@@ -100,6 +104,9 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
                     int u = arrowWidth - width2;
                     guiGraphics.blit(TEXTURE_ARROW_2, drawX, y + 33, u, 0, width2, arrowHeight, arrowWidth, arrowHeight);
                 }
+            }
+            if (normalized > 0.99f) {
+                this.startButton.active = true;
             }
         }
     }

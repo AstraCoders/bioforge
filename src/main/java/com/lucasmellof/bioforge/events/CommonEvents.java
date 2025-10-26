@@ -3,6 +3,7 @@ package com.lucasmellof.bioforge.events;
 import com.lucasmellof.bioforge.BioGeneMod;
 import com.lucasmellof.bioforge.Const;
 import com.lucasmellof.bioforge.network.C2SStartCentrifugePacket;
+import com.lucasmellof.bioforge.network.S2CStopCentrifugePacket;
 import com.lucasmellof.bioforge.registry.ModGenes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -24,5 +25,6 @@ public class CommonEvents {
     static void onRegisterPayload(RegisterPayloadHandlersEvent event) {
         var registrar = event.registrar(ModList.get().getModContainerById(Const.MOD_ID).get().getModInfo().getVersion().toString());
         registrar.playToServer(C2SStartCentrifugePacket.TYPE, C2SStartCentrifugePacket.STREAM_CODEC, C2SStartCentrifugePacket::handle);
+        registrar.playToClient(S2CStopCentrifugePacket.TYPE, S2CStopCentrifugePacket.STREAM_CODEC, S2CStopCentrifugePacket::handle);
     }
 }
