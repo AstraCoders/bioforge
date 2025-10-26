@@ -1,15 +1,13 @@
 package com.lucasmellof.bioforge.items;
 
+import com.lucasmellof.bioforge.blood.BloodTypeRegistry;
 import com.lucasmellof.bioforge.client.renderer.SyringeItemRenderer;
-import com.lucasmellof.bioforge.data.BloodData;
+import com.lucasmellof.bioforge.blood.BloodData;
 import com.lucasmellof.bioforge.datagen.ModLang;
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.Gene;
-import com.lucasmellof.bioforge.gene.GeneType;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -108,7 +106,9 @@ public class SyringeItem extends Item implements GeoItem {
             //TODO: var bloodData = entityWithGene.bioforge$getBloodData();
 
             triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) player.level()), "controller", "animation.full");
-            setBloodData(stack, new BloodData(player.isShiftKeyDown() ? 0xffff5555 : 0xff55ff55, false, new ArrayList<>(genes), false));
+			var modifier = BloodTypeRegistry.getModifier(target.getType());
+
+            setBloodData(stack, new BloodData(modifier.getColor(), false, new ArrayList<>(genes), false));
             entityWithGene.bioforge$clearGenes();
             target.hurt(level.damageSources().cactus(), 1f); // todo: add custom damage source
             player.getCooldowns().addCooldown(this, 10);

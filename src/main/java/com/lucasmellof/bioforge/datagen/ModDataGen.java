@@ -16,5 +16,6 @@ public class ModDataGen {
 	static void onGatherData(GatherDataEvent event) {
 		DataGenerator gen = event.getGenerator();
 		gen.addProvider(event.includeClient(), new ModLang(gen.getPackOutput()));
+        gen.addProvider(event.includeServer(), new ModBloodType(gen.getPackOutput().getOutputFolder().toString(), gen.getPackOutput()));
 	}
 }

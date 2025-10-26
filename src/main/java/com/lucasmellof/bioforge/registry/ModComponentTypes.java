@@ -1,7 +1,7 @@
 package com.lucasmellof.bioforge.registry;
 
 import com.lucasmellof.bioforge.BioGeneMod;
-import com.lucasmellof.bioforge.data.BloodData;
+import com.lucasmellof.bioforge.blood.BloodData;
 import com.lucasmellof.bioforge.gene.Gene;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;

@@ -1,9 +1,7 @@
 package com.lucasmellof.bioforge.client.renderer;
 
-import com.lucasmellof.bioforge.client.model.SyringeItemModel;
 import com.lucasmellof.bioforge.client.model.VialItemModel;
-import com.lucasmellof.bioforge.data.BloodData;
-import com.lucasmellof.bioforge.items.SyringeItem;
+import com.lucasmellof.bioforge.blood.BloodData;
 import com.lucasmellof.bioforge.items.VialItem;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
 import com.mojang.blaze3d.vertex.PoseStack;

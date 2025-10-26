@@ -1,18 +1,13 @@
 package com.lucasmellof.bioforge.client.renderer;
 
-import com.lucasmellof.bioforge.block.entity.CentrifugeBlockEntity;
 import com.lucasmellof.bioforge.block.entity.MicroscopeBlockEntity;
-import com.lucasmellof.bioforge.block.entity.VialHolderBlockEntity;
 import com.lucasmellof.bioforge.client.model.MicroscopeBlockEntityModel;
-import com.lucasmellof.bioforge.client.model.VialHolderBlockEntityModel;
-import com.lucasmellof.bioforge.data.BloodData;
+import com.lucasmellof.bioforge.blood.BloodData;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;

@@ -1,6 +1,6 @@
 package com.lucasmellof.bioforge.block.entity;
 
-import com.lucasmellof.bioforge.data.BloodData;
+import com.lucasmellof.bioforge.blood.BloodData;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
 import com.lucasmellof.bioforge.registry.ModBlockEntities;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;

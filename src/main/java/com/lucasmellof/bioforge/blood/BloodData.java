@@ -1,4 +1,4 @@
-package com.lucasmellof.bioforge.data;
+package com.lucasmellof.bioforge.blood;
 
 import com.lucasmellof.bioforge.gene.Gene;
 import com.lucasmellof.bioforge.utils.ColorUtils;

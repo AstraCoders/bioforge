@@ -1,8 +1,7 @@
 package com.lucasmellof.bioforge.items;
 
-import com.google.common.collect.ImmutableCollection;
 import com.lucasmellof.bioforge.client.renderer.VialItemRenderer;
-import com.lucasmellof.bioforge.data.BloodData;
+import com.lucasmellof.bioforge.blood.BloodData;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;

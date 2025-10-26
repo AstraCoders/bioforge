@@ -1,0 +1,11 @@
+{
+  "color": -2448096,
+  "entities": [
+    "minecraft:sniffer",
+    "minecraft:strider",
+    "minecraft:ghast",
+    "minecraft:elder_guardian",
+    "minecraft:guardian",
+    "minecraft:warden"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "color": -7114533,
+  "entities": [
+    "minecraft:witch",
+    "minecraft:allay",
+    "minecraft:vex",
+    "minecraft:enderman",
+    "minecraft:endermite",
+    "minecraft:wither",
+    "minecraft:breeze",
+    "minecraft:evoker",
+    "minecraft:shulker"
+  ]
+}

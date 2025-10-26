@@ -1,0 +1,13 @@
+{
+  "color": -11179217,
+  "entities": [
+    "minecraft:zombie",
+    "minecraft:zombified_piglin",
+    "minecraft:zombie_villager",
+    "minecraft:zombie_horse",
+    "minecraft:husk",
+    "minecraft:phantom",
+    "minecraft:drowned",
+    "minecraft:zoglin"
+  ]
+}
