@@ -2,12 +2,16 @@ package com.lucasmellof.bioforge.mixins;
 
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.Gene;
+import com.lucasmellof.bioforge.registry.ModGenes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,12 +26,16 @@ import java.util.Set;
  * @author Lucasmellof, Lucas de Mello Freitas created on 16/10/2025
  */
 @Mixin(LivingEntity.class)
-public abstract class MixinLivingEntity implements IEntityWithGene {
+public abstract class MixinLivingEntity extends Entity implements IEntityWithGene {
 
     @Unique
     private final Set<Gene> bioforge$genes = new HashSet<>();
 
-    @Override
+	public MixinLivingEntity(EntityType<?> entityType, Level level) {
+		super(entityType, level);
+	}
+
+	@Override
     public Set<Gene> bioforge$getGenes() {
         return this.bioforge$genes;
     }
@@ -59,6 +67,13 @@ public abstract class MixinLivingEntity implements IEntityWithGene {
         }
     }
 
+	@Inject(method = "tick", at = @At("TAIL"))
+	public void onTick(CallbackInfo ci) {
+		for (Gene gene : this.bioforge$genes) {
+			gene.tick(self(), gene);
+		}
+	}
+
     @Override
     public LivingEntity self() {
         return (LivingEntity) (Object) this;
@@ -69,4 +84,12 @@ public abstract class MixinLivingEntity implements IEntityWithGene {
         // all entities should have attack damage attribute to avoid crashes
         return AttributeSupplier.builder().add(Attributes.ATTACK_DAMAGE);
     }
+
+	@Override
+	public boolean fireImmune() {
+		if (bioforge$hasGene(ModGenes.FIRE_RESISTENT_GENE.get())) {
+			return true;
+		}
+		return super.fireImmune();
+	}
 }
