@@ -48,8 +48,6 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
     private static final RawAnimation ROTATING = RawAnimation.begin().thenPlay("animation.rotating");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private static final int INPUT_SLOT = 0;
-    private static final int OUTPUT_SLOT = 1;
     private static final int PROCESSING_TIME = 120;
 
     @Getter
@@ -73,7 +71,23 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
 		protected int getStackLimit(int slot, ItemStack stack) {
 			return 1;
 		}
-	};
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (start) {
+                return ItemStack.EMPTY;
+            }
+            return super.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            if (start) {
+                return stack;
+            }
+            return super.insertItem(slot, stack, simulate);
+        }
+    };
 
     public final ContainerData data = new ContainerData() {
         @Override
@@ -220,9 +234,9 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
     public static void tick(Level level, BlockPos pos, BlockState state, CentrifugeBlockEntity blockEntity) {
         if (level.isClientSide) return;
 
-        ItemStack inputStack = blockEntity.itemHandler.getStackInSlot(INPUT_SLOT);
+        boolean hasBlood = hasBlood(blockEntity);
 
-        if (blockEntity.start && !inputStack.isEmpty() && hasBloodData(inputStack)) {
+        if (blockEntity.start && hasBlood) {
             blockEntity.progress++;
 
             if (blockEntity.progress >= blockEntity.maxProgress) {
@@ -233,6 +247,16 @@ public class CentrifugeBlockEntity extends SyncableBlockEntity implements MenuPr
         }
 
         setChanged(level, pos, state);
+    }
+
+    public static boolean hasBlood(CentrifugeBlockEntity blockEntity) {
+        for (int i = 0; i < blockEntity.itemHandler.getSlots(); i++) {
+            ItemStack stack = blockEntity.itemHandler.getStackInSlot(i);
+            if (!stack.isEmpty() && hasBloodData(stack)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean hasBloodData(ItemStack stack) {

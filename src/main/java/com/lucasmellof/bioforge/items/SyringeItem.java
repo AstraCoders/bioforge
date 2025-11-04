@@ -84,9 +84,9 @@ public class SyringeItem extends Item implements GeoItem {
                     player.getEyePosition().add(player.getLookAngle().scale(5)),
                     player.getBoundingBox()
                             .expandTowards(player.getLookAngle().scale(5))
-                            .inflate(1),
+                            .inflate(2),
                     e -> true,
-                    5f);
+                    10f);
             if (hitResult == null) return;
             player.displayClientMessage(Component.literal("HitResult: " + hitResult.getType()), true);
             if (hitResult.getType() != HitResult.Type.ENTITY) return;
