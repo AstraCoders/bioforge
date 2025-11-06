@@ -3,13 +3,9 @@ package com.lucasmellof.bioforge.gene.types;
 import com.lucasmellof.bioforge.entity.IEntityWithGene;
 import com.lucasmellof.bioforge.gene.GeneAction;
 import com.lucasmellof.bioforge.gene.GeneInfo;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.player.Player;
 
 /*
  * @author Lucasmellof, Lucas de Mello Freitas created on 16/10/2025
@@ -43,5 +39,6 @@ public class BreedableGene implements GeneAction {
     }
 
     @Override
-    public void remove(IEntityWithGene entity) {}
+    public void remove(IEntityWithGene entity) {
+    }
 }

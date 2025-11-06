@@ -1,10 +1,17 @@
 package com.lucasmellof.bioforge.items;
 
-import com.lucasmellof.bioforge.client.renderer.VialItemRenderer;
 import com.lucasmellof.bioforge.blood.BloodData;
+import com.lucasmellof.bioforge.client.renderer.VialItemRenderer;
+import com.lucasmellof.bioforge.datagen.ModLang;
+import com.lucasmellof.bioforge.gene.Gene;
 import com.lucasmellof.bioforge.registry.ModComponentTypes;
+import com.lucasmellof.bioforge.utils.RomanNumeralUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -21,6 +28,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Consumer;
 
 /*
@@ -45,7 +53,7 @@ public class VialItem extends Item implements GeoItem {
         if (player.level().isClientSide) return false;
         var blood = getBloodData(stack);
         VialItem self = (VialItem) stack.getItem();
-        if (blood != null && blood.size() >= BloodData.MAX_MIX_COUNT ) {
+        if (blood != null && blood.size() >= BloodData.MAX_MIX_COUNT) {
             return false;
         }
         addBloodData(stack, data);
@@ -99,15 +107,83 @@ public class VialItem extends Item implements GeoItem {
         return data.size() >= BloodData.MAX_MIX_COUNT;
     }
 
+    ResourceLocation font = ResourceLocation.withDefaultNamespace("alt");
+    private static final String[] randomWords = new String[]{
+            "gene",
+            "locus",
+            "allele",
+            "genome",
+            "chromosome",
+            "nucleotide",
+            "mutation",
+            "phenotype",
+            "genotype",
+            "heredity"
+    };
+
+    @Override
+    public Component getName(ItemStack stack) {
+        var data = getBloodData(stack);
+        if (data == null || data.isEmpty()) {
+            return super.getName(stack);
+        }
+        if (data.size() == 1) {
+            return super.getName(stack);
+        }
+        return ((MutableComponent) super.getName(stack)).append(Component.literal(" (").append(ModLang.NOT_MIXED_VIAL.as()).append(")").withStyle(ChatFormatting.RED));
+    }
+
+    private static final Random random = new Random();
+    private final int randomIndex = random.nextInt(randomWords.length);
+
     @Override
     public void appendHoverText(
             ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         var blood = getBloodData(stack);
         if (blood == null) return;
+        int index = randomIndex;
+        boolean noGeneMsg = false;
+        int bloodIndex = 1;
         for (BloodData data : blood) {
-            tooltipComponents.add(Component.literal("- Blood: ").append(Integer.toString(data.color(), 16)));
-        }
 
+            if (blood.size() > 1 && index != 0) {
+                tooltipComponents.add(Component.empty());
+            }
+            MutableComponent sample = Component.literal("§7").append(ModLang.MISC_SAMPLE.as());
+            if (blood.size() > 1) {
+                tooltipComponents.add(sample.append(Component.literal(" " + bloodIndex++)));
+            } else {
+                tooltipComponents.add(sample);
+            }
+
+            if (data.genes().isEmpty()) {
+                if (!noGeneMsg) {
+                    index++;
+                    if (!data.discovered()) {
+                        tooltipComponents.add(Component.literal("- ").append(Component.empty().append(ModLang.MISC_NO_GENES_DISCOVERED.as()).withStyle(Style.EMPTY.withFont(font))).withColor(ChatFormatting.GRAY.getColor()));
+                        noGeneMsg = true;
+                        continue;
+                    }
+                    tooltipComponents.add(Component.literal("- ").append(ModLang.ITEM_NO_GENES.as()).withStyle(ChatFormatting.GRAY));
+                }
+                continue;
+            }
+
+            for (Gene gene : data.genes()) {
+                if (!data.discovered()) {
+                    index = (index + 1) % randomWords.length;
+                    tooltipComponents.add(Component.literal("§7- ").append(Component.literal( randomWords[index]).withStyle(Style.EMPTY.withFont(font).withColor(ChatFormatting.GRAY))));
+                    continue;
+                }
+                Style style = Style.EMPTY;
+                //if (gene.isHarmful()) {
+                //    style = style.withColor(0xFF0000); // Adicionar algo para ser agressivo
+                //} else {
+                style = style.withColor(ChatFormatting.GRAY);
+                //}
+                tooltipComponents.add(Component.literal("- ").append(gene.getType().name()).append(Component.literal(" " + RomanNumeralUtil.toRoman(gene.getLevel()))).setStyle(style));
+            }
+        }
     }
 
     @Override

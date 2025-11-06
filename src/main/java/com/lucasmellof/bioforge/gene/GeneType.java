@@ -3,6 +3,7 @@ package com.lucasmellof.bioforge.gene;
 import com.lucasmellof.bioforge.registry.ModGenes;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Supplier;
@@ -20,7 +21,7 @@ public record GeneType<T extends Gene>(
     public static final Codec<GeneType<?>> CODEC =
             ResourceLocation.CODEC.xmap(ModGenes.GENE_REGISTRY::get, GeneType::location);
 
-    public Component name() {
+    public MutableComponent name() {
         return Component.translatable(
                 "gene." + location().getNamespace() + "." + location().getPath());
     }

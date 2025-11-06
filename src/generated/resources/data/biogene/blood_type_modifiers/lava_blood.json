@@ -2,7 +2,6 @@
   "color": -47872,
   "entities": [
     "minecraft:magma_cube",
-    "minecraft:blaze",
-    "minecraft:cave_spider"
+    "minecraft:blaze"
   ]
 }

@@ -7,12 +7,7 @@ import com.lucasmellof.bioforge.gene.GeneInfo;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Witch;
-import net.minecraft.world.item.alchemy.Potions;
-
-import java.util.List;
 
 /*
  * @author Lucasmellof, Lucas de Mello Freitas created on 26/10/2025
@@ -33,8 +28,8 @@ public class SelfRegenGene implements GeneAction {
 
     @Override
     public void remove(IEntityWithGene entity) {
-		entity.self().removeEffect(MobEffects.REGENERATION);
-	}
+        entity.self().removeEffect(MobEffects.REGENERATION);
+    }
 
     @Override
     public void tick(LivingEntity entity, Gene gene) {
@@ -56,8 +51,8 @@ public class SelfRegenGene implements GeneAction {
                             1.0F,
                             0.8F + entity.getRandom().nextFloat() * 0.4F);
         }
-		MobEffectInstance instance = new MobEffectInstance(MobEffects.REGENERATION, 900);
-		entity.addEffect(instance);
-		entity.heal(1.0F);
+        MobEffectInstance instance = new MobEffectInstance(MobEffects.REGENERATION, 900);
+        entity.addEffect(instance);
+        entity.heal(1.0F);
     }
 }

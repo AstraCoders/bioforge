@@ -32,11 +32,10 @@ public class ModComponentTypes {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> BLOOD_MIX_COUNT_DATA =
             COMPONENT_TYPES.register("blood_mix_count", () ->
-                                                           DataComponentType.<Integer>builder()
-                                                                   .persistent(BloodData.MIX_COUNT_CODEC)
-                                                                   .networkSynchronized(BloodData.MIX_COUNT_STREAM_CODEC)
-                                                                   .build()
+                    DataComponentType.<Integer>builder()
+                            .persistent(BloodData.MIX_COUNT_CODEC)
+                            .networkSynchronized(BloodData.MIX_COUNT_STREAM_CODEC)
+                            .build()
             );
-
 
 }

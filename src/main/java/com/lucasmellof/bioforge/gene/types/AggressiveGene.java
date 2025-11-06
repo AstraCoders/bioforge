@@ -42,5 +42,6 @@ public class AggressiveGene implements GeneAction {
     }
 
     @Override
-    public void remove(IEntityWithGene entity) {}
+    public void remove(IEntityWithGene entity) {
+    }
 }

@@ -27,7 +27,7 @@ public class ModGenes {
     public static final DeferredRegister<GeneType<?>> GENES = DeferredRegister.create(GENE_REGISTRY_KEY, Const.MOD_ID);
 
     public static final DeferredHolder<GeneType<?>, GeneType<Gene>> AGGRESSIVE_GENE =
-            register("aggresive_gene", AggressiveGene.INFO, AggressiveGene::new);
+            register("aggressive_gene", AggressiveGene.INFO, AggressiveGene::new);
 
     public static final DeferredHolder<GeneType<?>, GeneType<Gene>> BREEDABLE_GENE =
             register("breedable_gene", BreedableGene.INFO, BreedableGene::new);

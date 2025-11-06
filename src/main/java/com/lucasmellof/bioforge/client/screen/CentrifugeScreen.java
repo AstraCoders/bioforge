@@ -2,6 +2,7 @@ package com.lucasmellof.bioforge.client.screen;
 
 import com.lucasmellof.bioforge.BioGeneMod;
 import com.lucasmellof.bioforge.Const;
+import com.lucasmellof.bioforge.datagen.ModLang;
 import com.lucasmellof.bioforge.menu.CentrifugeMenu;
 import com.lucasmellof.bioforge.menu.MicroscopeMenu;
 import com.lucasmellof.bioforge.network.C2SStartCentrifugePacket;
@@ -48,7 +49,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
 
         // Botão "Iniciar"
         this.startButton = this.addRenderableWidget(
-                Button.builder(Component.literal("Start"), button -> {
+                Button.builder(ModLang.UI_START_BUTTON.as(), button -> {
                             if (!menu.isCrafting()) {
                                 Minecraft.getInstance().player.connection.send(
                                         new C2SStartCentrifugePacket(menu.getBlockEntity().getBlockPos()));

@@ -18,13 +18,25 @@ public class ModLang extends LanguageProvider {
     public static final Lang ITEM_SYRINGE = Lang.of("item.biogene.syringe");
     public static final Lang ITEM_NO_GENES = Lang.of("item.biogene.syringe.no_genes");
     public static final Lang ITEM_GENES_LIST = Lang.of("item.biogene.syringe.genes");
-    public static final Lang GENE_BREEDABLE = Lang.of("gene.biogene.breedable_gene");
-    public static final Lang GENE_AGGRESSIVE = Lang.of("gene.biogene.aggressive_gene");
+    public static final Lang ITEM_VIAL = Lang.of("item.biogene.vial");
+
 
     public static final Lang ITEM_MICROSCOPE = Lang.of("block.biogene.microscope");
     public static final Lang ITEM_VIAL_HOLDER = Lang.of("block.biogene.vial");
     public static final Lang BLOCK_CENTRIFUGE = Lang.of("block.biogene.centrifuge");
     public static final Lang BLOCK_VIAL_HOLDER = Lang.of("block.biogene.vial_holder");
+
+    public static final Lang NOT_MIXED_VIAL = Lang.of("item.biogene.vial.not_mixed");
+    public static final Lang MISC_SAMPLE = Lang.of("misc.biogene.sample");
+    public static final Lang MISC_NO_GENES = Lang.of("misc.biogene.no_genes");
+    public static final Lang MISC_NO_GENES_DISCOVERED = Lang.of("misc.biogene.no_genes_discovered");
+
+    public static final Lang UI_START_BUTTON = Lang.of("ui.biogene.start_button");
+
+    public static final Lang GENE_BREEDABLE = Lang.of("gene.biogene.breedable_gene");
+    public static final Lang GENE_AGGRESSIVE = Lang.of("gene.biogene.aggressive_gene");
+    public static final Lang GENE_FIRE_RESISTANCE = Lang.of("gene.biogene.fire_resistant_gene");
+    public static final Lang GENE_SELF_REGEN = Lang.of("gene.biogene.self_regen_gene");
 
     @Override
     protected void addTranslations() {
@@ -32,13 +44,25 @@ public class ModLang extends LanguageProvider {
         ITEM_SYRINGE.add(this, "Syringe");
         ITEM_NO_GENES.add(this, "No Genes");
         ITEM_GENES_LIST.add(this, "Genes:");
-        GENE_BREEDABLE.add(this, "Breedable Gene");
-        GENE_AGGRESSIVE.add(this, "Aggressive Gene");
+        ITEM_VIAL.add(this, "Vial");
+
 
         ITEM_MICROSCOPE.add(this, "Microscope");
         ITEM_VIAL_HOLDER.add(this, "Vial Holder");
         BLOCK_CENTRIFUGE.add(this, "Centrifuge");
         BLOCK_VIAL_HOLDER.add(this, "Vial Holder");
+
+        NOT_MIXED_VIAL.add(this, "Not Mixed");
+        MISC_SAMPLE.add(this, "Sample");
+        MISC_NO_GENES.add(this, "No Genes");
+        MISC_NO_GENES_DISCOVERED.add(this, "No Genes Discovered");
+
+        UI_START_BUTTON.add(this, "Start");
+
+        GENE_BREEDABLE.add(this, "Breedable");
+        GENE_AGGRESSIVE.add(this, "Aggressive");
+        GENE_FIRE_RESISTANCE.add(this, "Fire Resistance");
+        GENE_SELF_REGEN.add(this, "Self Regeneration");
     }
 
     @AllArgsConstructor(staticName = "of")

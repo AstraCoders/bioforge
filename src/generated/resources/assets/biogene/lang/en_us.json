@@ -3,10 +3,18 @@
   "block.biogene.microscope": "Microscope",
   "block.biogene.vial": "Vial Holder",
   "block.biogene.vial_holder": "Vial Holder",
-  "gene.biogene.aggressive_gene": "Aggressive Gene",
-  "gene.biogene.breedable_gene": "Breedable Gene",
+  "gene.biogene.aggressive_gene": "Aggressive",
+  "gene.biogene.breedable_gene": "Breedable",
+  "gene.biogene.fire_resistant_gene": "Fire Resistance",
+  "gene.biogene.self_regen_gene": "Self Regeneration",
   "item.biogene.syringe": "Syringe",
   "item.biogene.syringe.genes": "Genes:",
   "item.biogene.syringe.no_genes": "No Genes",
-  "itemGroup.biogene": "BioGene Group"
+  "item.biogene.vial": "Vial",
+  "item.biogene.vial.not_mixed": "Not Mixed",
+  "itemGroup.biogene": "BioGene Group",
+  "misc.biogene.no_genes": "No Genes",
+  "misc.biogene.no_genes_discovered": "No Genes Discovered",
+  "misc.biogene.sample": "Sample",
+  "ui.biogene.start_button": "Start"
 }
